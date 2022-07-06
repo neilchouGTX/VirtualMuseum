@@ -7,5 +7,4 @@
             echo $row["branch"]."_";
         } 
     }
-    
 ?>
