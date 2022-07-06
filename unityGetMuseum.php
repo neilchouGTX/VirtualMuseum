@@ -5,6 +5,4 @@
     while($row = $result->fetch_assoc()){
         echo $row["exhibition_hall"]."_";
     } 
-    
-    
 ?>
