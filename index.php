@@ -12,6 +12,12 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <header>
+            <h1>
+              虛擬美術館圖片上傳系統  
+            </h1>
+        </header>
         <meta charset="utf-8">    
         <title>註冊系統</title>
     </head>
