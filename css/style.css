@@ -1,0 +1,108 @@
+footer{
+	font-size:14px;
+	font-weight: 200;
+    line-height: 1em;
+	padding: 20px;
+}
+.pagetop {
+    text-align: right;
+    margin: 1em;
+}
+.copyright {
+    border-top: solid 5px #CA5D87;
+    text-align: center;
+	padding-top: 20px;
+}
+
+h3 {
+    border-left: solid 6px #6b3008;  /* 標題三左側有寬6px的色塊 */
+    padding-left: 6px;               /* 標題三左側設定6px的間距 */
+}
+
+/* section */
+section {
+    margin: 48px 0px;          /* 區塊外部距離：上下48px  左右0px*/
+}
+
+/* 表格 */
+table {
+    border-collapse: collapse; /* 邊框合併為單一邊框，讓表格變得更美化*/
+    width: 100%;               /* 表格寬度設為100%，會隨著螢幕寬度縮放*/
+}
+
+th,td {
+    border: solid 1px #999999; /* 邊框底邊，設定為實線、1px、#999999深灰色細邊炳框*/
+    padding: 16px;             /* 內距設為16px*/
+}
+th {
+    font-weight: 400;          /* 表格標題字體粗細設為400*/
+    background-color:#DDD7CE;  /* 表格標題背景色設為#DDD7CE*/
+}
+/* 簡介調整了背景色與文字顏色 */
+#profile {
+    background-color:#3E2F19;
+    color: #ffffff;
+}
+#profile h2 {
+    color:#DDD7CE;
+}
+
+/* 設定了內容寬度的上限 */
+.inner {
+    max-width: 900px;
+    margin: 0 auto;  /* 左右置中 */
+}
+#html,#rwd{
+    max-width: 900px;
+    margin: 0 auto; /*  左右置中 */ 
+}
+/* #CSS調整了背景色 */
+#css{
+	background: #F7F1EB;
+}
+.flex-nav {
+    display: flex;
+}
+
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+    padding: 20px 0;
+}
+
+h1, h2 {
+    margin: 0;
+    padding: 34px 0 14px 40px;
+}
+
+nav > ul {
+    background-color: rgb(230, 230, 230);
+    list-style: none;   /* 移除項目符號 */
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    color: inherit; /* 移除超連結顏色 */
+    display: block; /* 讓 <a> 填滿 <li> */
+    font-size: 1.2rem;
+    padding: 10px;
+    text-decoration: none;  /* 移除超連結底線 */
+}
+
+/* 滑鼠移到 <a> 時變成深底淺色 */
+nav a:hover {
+    background-color: rgb(115, 115, 115);
+    color: white;
+}
+.flex-nav {
+    display: flex;
+    justify-content: center;
+}
+
+.content{
+    width: 600px;
+    height: 400px;
+    margin: 0 auto;
+}

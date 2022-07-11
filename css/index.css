@@ -2,3 +2,9 @@ header{
     background-color:aquamarine;
     color:red;
 }
+.center{
+    text-align: center;
+  }
+  .flex-nav {
+    display: flex;
+}
