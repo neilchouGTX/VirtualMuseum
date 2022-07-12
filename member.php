@@ -17,13 +17,26 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">    
-        <title>管理員系統</title>
+        <meta charset="utf-8">
+        <title>虛擬美術館-會員</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/mainTheme.css" rel="stylesheet" type="text/css"> 
     </head>
     <body align = center>
+        <header>
+            <a href="index.php"><div class="logodiv"><img id="logoPic" src="img/newLogo.png"/></div></a>
+            <nav>
+                <ul class="flex-nav">
+                    <li><a href="index.php">首頁</a></li>
+                    <li><a href="member.php">會員</a></li>
+                    <li><a href="index.php?logout=1">登出</a></li>
+                    <li><a href="#">介紹</a></li>
+                    <li><a href="#">關於我們</a></li>
+                </ul>
+            </nav>   
+        </header>
         <h1>歡迎<?php echo $mySqlName?>登入</h1>
         <input type="button" value="上傳圖片" onclick="location.href='imageUploader.php'" style="width:120px;height:40px;font-size:20px;">
         <input type="button" value="編輯班級" onclick="location.href='branch.php'" style="width:120px;height:40px;font-size:20px;">
-        <input type="button" value="登出" onclick="location.href='index.php?logout=1'" style="width:120px;height:40px;font-size:20px;">
     </body>
 </html>

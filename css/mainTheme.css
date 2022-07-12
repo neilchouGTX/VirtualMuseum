@@ -1,0 +1,42 @@
+.logodiv{
+    display:flex;
+    /* justify-content: flex-start; */
+    justify-content: center;
+}
+.logodiv img{
+    /*display:block; margin:auto;*/
+    /* height:734px;
+    width:2000px; */
+    height:auto;
+    width:30%;
+}
+.flex-nav {
+    display: flex;
+    justify-content: center;
+}
+body {
+    margin:0px;
+    padding: 20px 0;
+}
+nav > ul {
+    
+    background-color: rgb(230, 230, 230);
+    list-style: none;   /* 移除項目符號 */
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    
+    color: inherit; /* 移除超連結顏色 */
+    display: block; /* 讓 <a> 填滿 <li> */
+    font-size: xx-large ;
+    padding: 10px;
+    text-decoration: none;  /* 移除超連結底線 */
+}
+
+/* 滑鼠移到 <a> 時變成深底淺色 */
+nav a:hover {
+    background-color: rgb(115, 115, 115);
+    color: white;
+}
