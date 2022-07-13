@@ -33,6 +33,7 @@
         $sql = "CREATE TABLE ".$school_id."_branch";
         $sql = $sql."(
             branch VARCHAR(50),
+            branch_create_time DATETIME,
             PRIMARY KEY(branch)
             );";       
         if ($conn->query($sql) === TRUE) {
@@ -45,9 +46,9 @@
         $sql = $sql."(
             image_id int NOT NULL AUTO_INCREMENT,
             uploader VARCHAR(20),
-            image_title VARCHAR(100),
+            image_title VARCHAR(300),
             image_path VARCHAR(500),
-            voice_title VARCHAR(100),
+            voice_title VARCHAR(300),
             voice_path VARCHAR(500),
             PRIMARY KEY(image_id),
             FOREIGN KEY(uploader) REFERENCES `user_account`(username)
@@ -79,7 +80,7 @@
             image_id int,
             art_name VARCHAR(50),
             art_author VARCHAR(50),
-            art_description VARCHAR(100),
+            art_description VARCHAR(500),
             author_class VARCHAR(50),
             art_upload_time DATETIME,
             PRIMARY KEY(image_id),

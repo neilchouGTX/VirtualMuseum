@@ -76,8 +76,10 @@
             </nav>   
         </header>
         <h1>歡迎<?php echo $mySqlName?>登入</h1>
+        <h2>新增班級:</h2>
         <form method='post'>
-            增加班級:<input type='text' name='addBranch' />
+            班級名稱:<input type='text' name='addBranch' require/>
+            入學時間(西元):<input type='text' name='branchYear' require/>
             <button type='submit'>增加</button>
         </form>
         </br>
