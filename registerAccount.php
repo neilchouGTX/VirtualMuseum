@@ -1,3 +1,8 @@
+<!--
+    ABANDON!!    
+    this php file is abandon from 7/12
+    ABANDON!!
+-->
 <?php
     require_once("connMysql.php");
     session_start();

@@ -215,18 +215,25 @@
                 $resultBranch = $conn->query($sqlBranch);
 
                 $data_count = 0;
-                echo "<table style='border:3px #cccccc solid;' cellpadding='10' border='1'>";
-                echo "<tr><th>圖片資訊</th><th>圖片預覽</th><th>刪除</th><th>修改資料</th></tr>";
+                echo "<table style='border:3px #cccccc solid;' cellpadding='10' border='1' align=center>";
+                echo "<tr><th>圖片資訊</th><th>圖片預覽</th><th>上傳日期</th><th>刪除</th><th>修改資料</th></tr>";
                 echo "<form method='post'>";
                 while($row = $result->fetch_assoc()) {
                     mysqli_data_seek($resultArt,0);
                     mysqli_data_seek($resultBranch,0);
                     echo "<tr>";
                     echo "<td>";
-                    echo "圖片編號: ".$row["image_id"]."</br>"."圖片名稱: ".$row["image_title"];
+                    echo "<div >";
+                    echo "<p style='height:auto;width:300px;word-wrap:break-word;padding:20px'>圖片編號: ".$row["image_id"]."</br>"."圖片名稱: ".$row["image_title"]."</p>";
+                    echo "</div>";
                     echo "</td>";
                     echo "<td>";
-                    echo "<img src='".$row["image_path"]."' width='100' heigh='100' alt='a pic'>";
+                    echo "<img src='".$row["image_path"]."' height='300' alt='a pic'>";
+                    echo "</td>";
+                    $sqlImageData = "SELECT `art_upload_time` FROM `$school_id"."_image_data` WHERE image_id='".$row["image_id"]."'";
+                    $resultImageData = $conn->query($sqlImageData)->fetch_assoc();
+                    echo "<td>";
+                    echo $resultImageData["art_upload_time"];
                     echo "</td>";
                     echo "<td align = center>";
                     echo "<input type='checkbox' name='deletePictureID[]' value=".$row['image_id']." />

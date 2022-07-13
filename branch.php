@@ -28,8 +28,10 @@
         }
     }
     
-    if(isset($_POST["addBranch"])){
-        $sql = "INSERT INTO `".$school_id."_branch`(branch) VALUES('".$_POST["addBranch"]."')";
+    if(isset($_POST["addBranch"]) && isset($_POST["branchYear"])){
+        $branchMerge = $_POST["branchYear"]."_".$_POST["addBranch"];
+        $phpDateTime = date ('Y-m-d H:i:s T');
+        $sql = "INSERT INTO `".$school_id."_branch`(branch,branch_create_time) VALUES('".$branchMerge."','".$phpDateTime."')";
         try{
             if($conn->query($sql)){
                 echo "insert success";
@@ -61,6 +63,11 @@
         <title>虛擬美術館-編輯班級</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/mainTheme.css" rel="stylesheet" type="text/css"> 
+        <style>
+            th,td{
+                padding:20px;   
+            }
+        </style>
     </head>
     <body align = center>
         <header>
@@ -78,35 +85,43 @@
         <h1>歡迎<?php echo $mySqlName?>登入</h1>
         <h2>新增班級:</h2>
         <form method='post'>
-            班級名稱:<input type='text' name='addBranch' require/>
-            入學時間(西元):<input type='text' name='branchYear' require/>
+            班級名稱:<input type='text' name='addBranch' required/>
+            入學年度(西元):<input type='text' name='branchYear' required/>
             <button type='submit'>增加</button>
         </form>
         </br>
         <p>已增加名單</p>
+        <form method='post'>
         <table style='border:3px #cccccc solid;' cellpadding='10' border='1' align=center >
             <tr>
-                <th>班級</th><th>刪除</th>
+                <th>班級</th><th>入學年度</th><th>創立日期</th><th>刪除</th>
             </tr>
             
             <?php
-                $sql = "SELECT `branch` FROM `".$school_id."_branch`";
+                $sql = "SELECT `branch`,`branch_create_time` FROM `".$school_id."_branch`";
                 $result = $conn->query($sql);
-                echo "<form method='post'>";
-                
                 while($row = $result->fetch_assoc()){
+                    $barnchSplit = explode("_",$row["branch"]);
                     echo "<tr>";
                     echo "<td>";
-                    echo $row["branch"];
+                    echo $barnchSplit[1];
+                    echo "</td>";
+                    echo "<td>";
+                    echo $barnchSplit[0];
+                    echo "</td>";
+                    echo "<td>";
+                    echo $row["branch_create_time"];
                     echo "</td>";
                     echo "<td>";
                     echo "<input type='checkbox' name='deleteBranch[]' value='".$row["branch"]."' />";
                     echo "</td>";
                     echo "</tr>";
                 }
-                echo "<button type='submit'>刪除</button>";
-                echo "</form>";
+                // echo "<button type='submit'>刪除</button>";
+                // echo "</form>";
             ?>
         </table>
+        <button type='submit'>刪除</button>
+        </form>
     </body>
 </html>
