@@ -20,27 +20,21 @@
         echo "<h1>請先新增至少一個班級，即將跳轉...</h1>";
         exit();
     }    
-
-    if(file_exists("image/$school_id")){
-        //echo "</br>already created school folder</br>";
-    }
-    else{
+    $dateOfToday = date('Ymd');
+    if(!file_exists("image/$school_id/")){
         mkdir("image/$school_id",0755);
-        //echo "</br>created school folder</br>";
     }
-    if(file_exists("image/$school_id/$username")){
-        //echo "</br>already created username folder</br>";
-    }
-    else{
+    if(!file_exists("image/$school_id/$username")){
         mkdir("image/$school_id/$username",0755);
-        //echo "</br>created school folder</br>";
+    }
+    if(!file_exists("image/$school_id/$username/$dateOfToday")){
+        mkdir("image/$school_id/$username/$dateOfToday",0755);
     }
     if(isset($_POST["action"])){
         if($_POST["action"]=="delete"){
             $preDelete = $_POST["deletePictureID"];
             for($i=0; $i<count($preDelete); $i++){
                 unlink($_POST["deletePicturePath"][$preDelete[$i]]);
-
                 $sql = "SELECT `art_place` FROM `$school_id"."_exhibition_hall` WHERE image_id='$preDelete[$i]' ";
                 $result = $conn->query($sql);
                 if(isset($result)){
@@ -118,49 +112,67 @@
         }
 
     }
-    if(isset($_POST["deletePicture"])){
-        unlink("image/$school_id/$username/".$_POST["deletePicture"]["title"]);
-        $stmt = $conn->prepare("DELETE FROM `$school_id"."_image_data` WHERE image_id= ?");
-        $stmt -> bind_param("s",$_POST["deletePicture"]["id"]);
-        $stmt -> execute();
-        $stmt -> close();
+    // if(isset($_POST["deletePicture"])){
+    //     unlink("image/$school_id/$username/".$_POST["deletePicture"]["title"]);
+    //     $stmt = $conn->prepare("DELETE FROM `$school_id"."_image_data` WHERE image_id= ?");
+    //     $stmt -> bind_param("s",$_POST["deletePicture"]["id"]);
+    //     $stmt -> execute();
+    //     $stmt -> close();
 
-        $stmt = $conn->prepare("DELETE FROM `$school_id"."_image_attribute` WHERE image_id= ?");
-        $stmt -> bind_param("s",$_POST["deletePicture"]["id"]);
-        $stmt -> execute();
-        $stmt -> close();
-        header("Location: imageUploader.php");
-    }
+    //     $stmt = $conn->prepare("DELETE FROM `$school_id"."_image_attribute` WHERE image_id= ?");
+    //     $stmt -> bind_param("s",$_POST["deletePicture"]["id"]);
+    //     $stmt -> execute();
+    //     $stmt -> close();
+    //     header("Location: imageUploader.php");
+    // }
     if(isset($_FILES["fileUpload"]["name"]) && $_FILES["fileUpload"]["error"][0]==0){
         $total_count = count($_FILES["fileUpload"]["name"]);
         $upload_flag = true;
+        $dateOfToday = date('Ymd');
+        $sqlCountToday = "SELECT `image_id` FROM $school_id"."_image_attribute WHERE `image_id` LIKE '".$dateOfToday."%' ORDER BY `image_id` DESC";
+        $resultCountToday = $conn->query($sqlCountToday);
+        $rowCountToday = $resultCountToday->fetch_assoc();
+        if(!isset($rowCountToday["image_id"])){
+            $numberOfToday=0;
+        }
+        else{
+            $numberOfToday = explode("_",$rowCountToday["image_id"]);
+            $numberOfToday =  $numberOfToday[1];
+        }
         for($i=0; $i<$total_count; $i++){
-            if(move_uploaded_file($_FILES["fileUpload"]["tmp_name"][$i],"image/$school_id/$username/".$_FILES["fileUpload"]["name"][$i])){
-                $stmt = $conn->prepare("INSERT INTO $school_id"."_image_attribute (uploader,image_title, image_path) VALUES (?,?,?);");
-                $stmt -> bind_param("sss",$username,$_FILES["fileUpload"]["name"][$i],$dir);
-                $dir = "image/$school_id/$username/".$_FILES["fileUpload"]["name"][$i];
-                $stmt -> execute();
-                $stmt -> close();
+            $_FILES["fileUpload"]["name"][$i] = str_replace(" ", "_", $_FILES["fileUpload"]["name"][$i]); 
+            if(move_uploaded_file($_FILES["fileUpload"]["tmp_name"][$i],"image/$school_id/$username/$dateOfToday/".$_FILES["fileUpload"]["name"][$i])){
+                $sqlCheckDuplicate = "SELECT COUNT(`image_title`) FROM $school_id"."_image_attribute WHERE `image_title`='".$_FILES["fileUpload"]["name"][$i]."'" ;
+                $resultCheckDuplicate = $conn->query($sqlCheckDuplicate)->fetch_assoc();
+                if($resultCheckDuplicate["COUNT(`image_title`)"]==0){
+                    $stmt = $conn->prepare("INSERT INTO $school_id"."_image_attribute (image_id,uploader,image_title, image_path) VALUES (?,?,?,?);");
+                    $stmt -> bind_param("ssss",$pre_image_id,$username,$_FILES["fileUpload"]["name"][$i],$dir);
+                    $pre_image_id = $dateOfToday."_".str_pad(($numberOfToday+$i+1),4,"0",STR_PAD_LEFT);
+                    $dir = "image/$school_id/$username/$dateOfToday/".$_FILES["fileUpload"]["name"][$i];
+                    $stmt -> execute();
+                    $stmt -> close();
 
-                $stmt = $conn->prepare("SELECT image_id FROM `$school_id"."_image_attribute` WHERE image_title=?");
-                $stmt -> bind_param("s",$_FILES["fileUpload"]["name"][$i]);
-                $stmt -> execute();
-                $stmt -> bind_result($fetch_image_id);
-                $stmt -> fetch();
-                $stmt -> close();
+                    $stmt = $conn->prepare("SELECT image_id FROM `$school_id"."_image_attribute` WHERE image_title=?");
+                    $stmt -> bind_param("s",$_FILES["fileUpload"]["name"][$i]);
+                    $stmt -> execute();
+                    $stmt -> bind_result($fetch_image_id);
+                    $stmt -> fetch();
+                    $stmt -> close();
 
-                $stmt = $conn->prepare("INSERT INTO $school_id"."_image_data (image_id,art_upload_time) VALUES (?,?);");
-                $phpDateTime = date ('Y-m-d H:i:s T');
-                $stmt -> bind_param("ss",$fetch_image_id,$phpDateTime);
-                $stmt -> execute();
-                $stmt -> close();
-                // echo "upload success</br>";
-                // echo $_FILES["fileUpload"]["tmp_name"][$i]."</br>";
-                // echo $_FILES["fileUpload"]["name"][$i]."</br>";
+                    $stmt = $conn->prepare("INSERT INTO $school_id"."_image_data (image_id,art_upload_time) VALUES (?,?);");
+                    $phpDateTime = date ('Y-m-d H:i:s T');
+                    $stmt -> bind_param("ss",$fetch_image_id,$phpDateTime);
+                    $stmt -> execute();
+                    $stmt -> close();
+                }
+                else{
+                    header("refresh:3;url=imageUploader.php");
+                    echo "重複檔名(".$_FILES["fileUpload"]["name"][$i].")上傳...即將返回";
+                    exit();
+                }
             }
             else{
                 $upload_flag = false;
-                // echo "uplaod failed";
             }
         }
         if($upload_flag)
@@ -243,7 +255,7 @@
                     echo "<td id='picData' align='left'>";
                     /*---------------------this is the start of inner table---------------------*/
                     echo "<table style='border:3px #cccccc solid;' border='1'>";
-                    $sqlChooseData = "SELECT `art_name`,`art_author`,`art_description`,`author_class` FROM `$school_id"."_image_data` WHERE image_id=".$row["image_id"];
+                    $sqlChooseData = "SELECT `art_name`,`art_author`,`art_description`,`author_class` FROM `$school_id"."_image_data` WHERE image_id='".$row["image_id"]."'";
                     $resultChooseData = $conn->query($sqlChooseData);
                     $rowChooseData = $resultChooseData->fetch_assoc();
                     echo "<tr>";

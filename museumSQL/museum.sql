@@ -40,7 +40,7 @@ CREATE TABLE `AJ001_branch`(
 );
 
 CREATE TABLE `AJ001_image_attribute`(
-	image_id int NOT NULL AUTO_INCREMENT,
+	image_id VARCHAR(15) NOT NULL,
     uploader VARCHAR(20),
     image_title VARCHAR(300),
     image_path VARCHAR(500),
@@ -51,7 +51,7 @@ CREATE TABLE `AJ001_image_attribute`(
 );
 
 CREATE TABLE `AJ001_exhibition_hall`(
-    image_id int,
+    image_id VARCHAR(15),
     branch VARCHAR(50),
     art_place VARCHAR(10),
     FOREIGN KEY(image_id) REFERENCES `AJ001_image_attribute`(image_id),
@@ -61,7 +61,7 @@ CREATE TABLE `AJ001_exhibition_hall`(
 );
 
 CREATE TABLE `AJ001_image_data`(
-	image_id int,
+	image_id VARCHAR(15),
     art_name VARCHAR(50),
     art_author VARCHAR(50),
     art_description VARCHAR(500),

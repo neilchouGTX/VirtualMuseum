@@ -44,7 +44,7 @@
 
         $sql = "CREATE TABLE ".$school_id."_image_attribute";
         $sql = $sql."(
-            image_id int NOT NULL AUTO_INCREMENT,
+            image_id VARCHAR(15) NOT NULL,
             uploader VARCHAR(20),
             image_title VARCHAR(300),
             image_path VARCHAR(500),
@@ -61,7 +61,7 @@
 
         $sql = "CREATE TABLE ".$school_id."_exhibition_hall";
         $sql = $sql."(
-            image_id int,
+            image_id VARCHAR(15),
             branch VARCHAR(50),
             art_place VARCHAR(10),
             FOREIGN KEY(image_id) REFERENCES `".$school_id."_image_attribute`(image_id),
@@ -77,7 +77,7 @@
 
         $sql = "CREATE TABLE ".$school_id."_image_data";
         $sql = $sql."(
-            image_id int,
+            image_id VARCHAR(15),
             art_name VARCHAR(50),
             art_author VARCHAR(50),
             art_description VARCHAR(500),
