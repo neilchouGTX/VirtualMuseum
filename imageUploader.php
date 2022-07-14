@@ -176,7 +176,8 @@
         <meta charset="utf-8">
         <title>虛擬美術館-圖片上傳</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="css/mainTheme.css" rel="stylesheet" type="text/css"> 
+        <link href="css/mainTheme.css" rel="stylesheet" type="text/css">
+        <link href="css/imageUploader.css" rel="stylesheet" type="text/css">
     </head>
     <body align = center>
         <header>
@@ -223,12 +224,12 @@
                     mysqli_data_seek($resultBranch,0);
                     echo "<tr>";
                     echo "<td>";
-                    echo "<div >";
-                    echo "<p style='height:auto;width:300px;word-wrap:break-word;padding:20px'>圖片編號: ".$row["image_id"]."</br>"."圖片名稱: ".$row["image_title"]."</p>";
-                    echo "</div>";
+                    echo "<p id='picID' >圖片編號: ".$row["image_id"]."</br>"."圖片名稱: ".$row["image_title"]."</p>";
                     echo "</td>";
                     echo "<td>";
-                    echo "<img src='".$row["image_path"]."' height='300' alt='a pic'>";
+                    echo "<div class='imageDiv'>";
+                    echo "<img class='image' src='".$row["image_path"]."' alt='a pic'>";
+                    echo "</div>";
                     echo "</td>";
                     $sqlImageData = "SELECT `art_upload_time` FROM `$school_id"."_image_data` WHERE image_id='".$row["image_id"]."'";
                     $resultImageData = $conn->query($sqlImageData)->fetch_assoc();
@@ -239,39 +240,93 @@
                     echo "<input type='checkbox' name='deletePictureID[]' value=".$row['image_id']." />
                             <input type='hidden' name='deletePicturePath[".$row['image_id']."]' value=".$row['image_path']." />";
                     echo "</td>";
-                    echo "<td align='left'>";
+                    echo "<td id='picData' align='left'>";
+                    /*---------------------this is the start of inner table---------------------*/
+                    echo "<table style='border:3px #cccccc solid;' border='1'>";
                     $sqlChooseData = "SELECT `art_name`,`art_author`,`art_description`,`author_class` FROM `$school_id"."_image_data` WHERE image_id=".$row["image_id"];
                     $resultChooseData = $conn->query($sqlChooseData);
                     $rowChooseData = $resultChooseData->fetch_assoc();
-                    echo "作品名稱:<input type='text' name='updateArtName[".$row["image_id"]."]' value='".$rowChooseData["art_name"]."'/></br>
-                        作者:&emsp;&emsp;<input type='text' name='updateArtAuthor[".$row["image_id"]."]' value='".$rowChooseData["art_author"]."'/></br>
-                        作品描述:<input type='text' name='updateArtDescription[".$row["image_id"]."]' value='".$rowChooseData["art_description"]."'/></br>
-                        班級:&emsp;&emsp;<input type='text' name='updateAuthorClass[".$row["image_id"]."]' value='".$rowChooseData["author_class"]."' disabled='disabled'/></br>";
-                    
-                    echo "選擇班級:<select name='updateAuthorClass[".$row["image_id"]."]'>";
-                        while($rowBranch = $resultBranch->fetch_assoc()){
-                            if($rowChooseData["author_class"] == $rowBranch["branch"])
-                                echo "<option value='".$rowBranch["branch"]."' selected='selected'>".$rowBranch["branch"]."</option>";
-                            else
-                                echo "<option value='".$rowBranch["branch"]."'>".$rowBranch["branch"]."</option>";
-                        }
-                    echo "</select></br>";
+                    echo "<tr>";
+                    echo "<td>";
+                    echo "作品名稱:";
+                    echo "</td>";
+                    echo "<td style='width:400px;'>";
+                    echo "<input type='text' name='updateArtName[".$row["image_id"]."]' value='".$rowChooseData["art_name"]."'/>";
+                    echo "</td>";
+                    echo "</tr>";
 
-                    echo "選擇擺放位置:<select name='updateArtPlace[".$row["image_id"]."]'>";
+                    echo "<tr>";
+                    echo "<td>";
+                    echo "作者:";
+                    echo "</td>";
+                    echo "<td>";
+                    echo "<input type='text' name='updateArtAuthor[".$row["image_id"]."]' value='".$rowChooseData["art_author"]."'/>";
+                    echo "</td>";
+                    echo "</tr>";
+
+                    echo "<tr>";
+                    echo "<td>";
+                    echo "作品描述:";
+                    echo "</td>";
+                    echo "<td>";
+                    echo "<textarea type='text' name='updateArtDescription[".$row["image_id"]."]' >".$rowChooseData["art_description"]."</textarea>";
+                    echo "</td>";
+                    echo "</tr>";
+
+                    echo "<tr>";
+                    echo "<td>";
+                    echo "班級:";
+                    echo "</td>";
+                    echo "<td>";
+                    echo "<input type='text' name='updateAuthorClass[".$row["image_id"]."]' value='".$rowChooseData["author_class"]."' disabled='disabled'/>";
+                    echo "</td>";
+                    echo "</tr>";
+
+                    echo "<tr>";
+                    echo "<td>";
+                    echo "選擇班級:";
+                    echo "</td>";
+                    echo "<td>";
+                    echo "<select name='updateAuthorClass[".$row["image_id"]."]'>";
+                    while($rowBranch = $resultBranch->fetch_assoc()){
+                        if($rowChooseData["author_class"] == $rowBranch["branch"])
+                            echo "<option value='".$rowBranch["branch"]."' selected='selected'>".$rowBranch["branch"]."</option>";
+                        else
+                            echo "<option value='".$rowBranch["branch"]."'>".$rowBranch["branch"]."</option>";
+                    }
+                    echo "</select>";
+                    echo "</td>";
+                    echo "</tr>";
+                    
+                    echo "<tr>";
+                    echo "<td>";
+                    echo "選擇擺放位置:";
+                    echo "</td>";
+                    echo "<td>";
+                    echo "<select name='updateArtPlace[".$row["image_id"]."]'>";
                     echo "<option value=''>預設</option>";
                     echo "<option value='remove'>全數移除</option>";
-                        while($rowArt = $resultArt->fetch_assoc()){
-                                echo "<option value='".$rowArt["art_place"]."'>".$rowArt["exhibition_hall"].$rowArt["art_place"]."</option>";
-                        }
-                    echo "</select></br>";
+                    while($rowArt = $resultArt->fetch_assoc()){
+                        echo "<option value='".$rowArt["art_place"]."'>".$rowArt["exhibition_hall"].$rowArt["art_place"]."</option>";
+                    }
+                    echo "</select>";
+                    echo "</td>";
+                    echo "</tr>";
 
                     $sqlFindHall = "SELECT `branch`,`art_place` FROM `$school_id"."_exhibition_hall` WHERE image_id='".$row['image_id']."'";
                     $resultFindHall = $conn->query($sqlFindHall);
-                    echo "</br>已放置的畫框:</br>";
+                    echo "<tr>";
+                    echo "<td>";
+                    echo "已放置的畫框:";
+                    echo "</td>";
+                    echo "<td>";
                     while($rowFindHall = $resultFindHall->fetch_assoc()){
                         echo $rowFindHall["branch"]."班的".$rowFindHall["art_place"]."畫框</br>";
                     }
-
+                    echo "</td>";
+                    echo "</tr>";
+                    echo "</table>";
+                    /*---------------------this is the end of inner table---------------------*/
                     echo "</td>";
                     echo "</tr>";  
                     $data_count++;

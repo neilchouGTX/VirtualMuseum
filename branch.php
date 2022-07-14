@@ -38,7 +38,7 @@
                 $sql = "SELECT `art_place` FROM `museum_hall`";
                 $result = $conn->query($sql);
                 while($row = $result->fetch_assoc()){
-                    $sqlInsert = "INSERT INTO `".$school_id."_exhibition_hall`(branch,art_place) VALUES('".$_POST["addBranch"]."','".$row["art_place"]."')";
+                    $sqlInsert = "INSERT INTO `".$school_id."_exhibition_hall`(branch,art_place) VALUES('".$branchMerge."','".$row["art_place"]."')";
                     $conn->query($sqlInsert);
                 }
                 
