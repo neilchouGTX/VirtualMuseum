@@ -11,9 +11,9 @@
     if(isset($_POST["name"]) && isset($_POST["username"]) && isset($_POST["pwd"])){
         $sql = "SELECT COUNT(`username`) FROM `user_account` WHERE school_id ='".$school_id."'";
         $result = $conn->query($sql)->fetch_assoc();
-        if($result["COUNT(`username`)"] >= 3){
+        if($result["COUNT(`username`)"] >= 4){
             header("refresh:3;url=member.php");
-            echo "<h1>包含總管理員已加滿三個成員，無法再加入了</h1>";
+            echo "<h1>已加滿三個附屬成員，無法再加入了</h1>";
             exit();
         }
 
