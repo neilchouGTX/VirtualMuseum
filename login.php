@@ -6,14 +6,15 @@
         header("Location: member.php");
     }
     if(isset($_POST["username"]) && isset($_POST["password"])){
-        $stmt = $conn->prepare("SELECT `password` FROM `user_account` WHERE username=?");
+        $stmt = $conn->prepare("SELECT `password`,`permission` FROM `user_account` WHERE username=?");
         $stmt -> bind_param("s",$_POST["username"]);
         $stmt -> execute();
-        $stmt -> bind_result($mySqlPWD);
+        $stmt -> bind_result($mySqlPWD,$p_permission);
         $stmt -> fetch();
         $stmt -> close();
         if(($_POST["password"] == $mySqlPWD) && ($_POST["password"]!= "")){
             $_SESSION["username"] = $_POST["username"];
+            $_SESSION["permission"] = $p_permission;
             header("Location: member.php");
         }
         else{
@@ -45,7 +46,7 @@
             <nav>
                 <ul class="flex-nav">
                     <li><a href="index.php">首頁</a></li>
-                    <li><a href="registerSchool.php">註冊學校</a></li>
+                    <!-- <li><a href="registerSchool.php">註冊學校</a></li> -->
                     <li><a href="login.php">登入</a></li>
                     <li><a href="#">介紹</a></li>
                     <li><a href="#">關於我們</a></li>
@@ -58,11 +59,11 @@
             <p>
                 帳號:
                 </br>
-                <input name="username" type="text">
+                <input name="username" type="text" pattern="^[\w@\.]+$" maxlength="100">
                 </br>
                 密碼:
                 </br>
-                <input name="password" type="password">
+                <input name="password" type="password" pattern="[\w]+$" maxlength="50">
                 <br>
                 <input type="submit" name="button" id="button" value="登入系統">
                 <br>

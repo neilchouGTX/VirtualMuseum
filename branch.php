@@ -85,8 +85,8 @@
         <h1>歡迎<?php echo $mySqlName?>登入</h1>
         <h2>新增班級:</h2>
         <form method='post'>
-            班級名稱:<input type='text' name='addBranch' required/>
-            入學年度(西元):<input type='text' name='branchYear' required/>
+            班級名稱:<input type='text' name='addBranch' pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="40" required="required"/>
+            入學年度(西元):<input type='text' name='branchYear' pattern="^[\d]+$" maxlength="4" required="required"/>
             <button type='submit'>增加</button>
         </form>
         </br>

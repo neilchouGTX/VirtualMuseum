@@ -23,15 +23,42 @@ CREATE TABLE `user_account`(
     name VARCHAR(50) NOT NULL,
     password VARCHAR(50) NOT NULL,
     position VARCHAR(50),
+    permission tinyint,
     PRIMARY KEY(username),
     FOREIGN KEY(school_id) REFERENCES `city_table`(school_id)
 );
+
+INSERT INTO user_account(username,name,password,position,permission)
+VALUES ("admin","admin","1990","admin",0);
 
 CREATE TABLE `museum_hall`(
 	exhibition_hall VARCHAR(30),
     art_place VARCHAR(10),
     PRIMARY KEY(art_place)
 );
+
+INSERT INTO museum_hall(exhibition_hall,art_place)
+VALUES ("北美館","AA001"),
+("北美館","AA002"),
+("北美館","AA003"),
+("北美館","AA004"),
+("北美館","AA005"),
+("北美館","AA006"),
+("北美館","AA007"),
+("北美館","AA008"),
+("北美館","AA009"),
+("北美館","AA010"),
+("新北館","FA001"),
+("新北館","FA002"),
+("新北館","FA003"),
+("新北館","FA004"),
+("新北館","FA005"),
+("新北館","FA006"),
+("新北館","FA007"),
+("新北館","FA008"),
+("新北館","FA009"),
+("新北館","FA010");
+
 /*
 CREATE TABLE `AJ001_branch`(
 	branch VARCHAR(50),

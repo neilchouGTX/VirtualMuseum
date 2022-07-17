@@ -263,7 +263,7 @@
                     echo "作品名稱:";
                     echo "</td>";
                     echo "<td style='width:400px;'>";
-                    echo "<input type='text' name='updateArtName[".$row["image_id"]."]' value='".$rowChooseData["art_name"]."'/>";
+                    echo "<input type='text' name='updateArtName[".$row["image_id"]."]' value='".$rowChooseData["art_name"]."' pattern='^[\w\u4e00-\u9fa5 ]+$' maxlength='50'/>";
                     echo "</td>";
                     echo "</tr>";
 
@@ -272,7 +272,7 @@
                     echo "作者:";
                     echo "</td>";
                     echo "<td>";
-                    echo "<input type='text' name='updateArtAuthor[".$row["image_id"]."]' value='".$rowChooseData["art_author"]."'/>";
+                    echo "<input type='text' name='updateArtAuthor[".$row["image_id"]."]' value='".$rowChooseData["art_author"]."'  maxlength='50'/>";
                     echo "</td>";
                     echo "</tr>";
 
@@ -281,7 +281,7 @@
                     echo "作品描述:";
                     echo "</td>";
                     echo "<td>";
-                    echo "<textarea type='text' name='updateArtDescription[".$row["image_id"]."]' >".$rowChooseData["art_description"]."</textarea>";
+                    echo "<textarea type='text' name='updateArtDescription[".$row["image_id"]."]'  maxlength='500'>".$rowChooseData["art_description"]."</textarea>";
                     echo "</td>";
                     echo "</tr>";
 

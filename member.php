@@ -5,10 +5,10 @@
     if((!isset($_SESSION["username"])) || ($_SESSION["username"]=="")){
         header("Location: index.php");
     }
-    $stmt = $conn->prepare("SELECT `school_id`,`name` FROM `user_account` WHERE username=?");
+    $stmt = $conn->prepare("SELECT `school_id`,`name`,`permission` FROM `user_account` WHERE username=?");
     $stmt -> bind_param("s",$_SESSION["username"]); 
     $stmt -> execute();
-    $stmt -> bind_result($school_id,$mySqlName);
+    $stmt -> bind_result($school_id,$mySqlName,$permission);
     $stmt -> fetch();
     $stmt -> close();
     $username = $_SESSION["username"];
@@ -36,7 +36,21 @@
             </nav>   
         </header>
         <h1>歡迎<?php echo $mySqlName?>登入</h1>
-        <input type="button" value="上傳圖片" onclick="location.href='imageUploader.php'" style="width:120px;height:40px;font-size:20px;">
-        <input type="button" value="編輯班級" onclick="location.href='branch.php'" style="width:120px;height:40px;font-size:20px;">
+        <h3>學校代碼:<?php echo $school_id?></h3>
+        <h3>權限等級:<?php echo $permission?></h3>
+        <?php 
+            if($permission==0){
+                echo "<input type='button' value='註冊學校' onclick='location.href=\"registerSchool.php\"' style='width:120px;height:40px;font-size:20px;'>";
+            }
+            else if($permission==1){
+                echo "<input type='button' value='上傳圖片' onclick='location.href=\"imageUploader.php\"' style='width:120px;height:40px;font-size:20px;'>";
+                echo "<input type='button' value='編輯班級' onclick='location.href=\"branch.php\"' style='width:120px;height:40px;font-size:20px;'>";
+                echo "<input type='button' value='新增管理員' onclick='location.href=\"registerAccount.php\"' style='width:120px;height:40px;font-size:20px;'>";
+            }
+            else{
+                echo "<input type='button' value='上傳圖片' onclick='location.href=\"imageUploader.php\"' style='width:120px;height:40px;font-size:20px;'>";
+                echo "<input type='button' value='編輯班級' onclick='location.href=\"branch.php\"' style='width:120px;height:40px;font-size:20px;'>";
+            }
+        ?>
     </body>
 </html>

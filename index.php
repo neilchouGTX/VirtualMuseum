@@ -29,7 +29,7 @@
                             echo "<li><a href='index.php?logout=1'>登出</a></li>";
                         }
                         else{
-                            echo "<li><a href='registerSchool.php'>註冊學校</a></li>";
+                            // echo "<li><a href='registerSchool.php'>註冊學校</a></li>";
                             echo "<li><a href='login.php'>登入</a></li>";
                         }
                     ?>

@@ -2,6 +2,9 @@
     require_once("connMysql.php");
     session_start();
     $usernameDuplicate = False;
+    if(!isset($_SESSION["username"]) || ($_SESSION["username"]=="") || $_SESSION["permission"]!=0 ){
+        header('location:index.php');
+    }
     if(isset($_POST["name"]) && isset($_POST["username"]) && isset($_POST["pwd"])){
         $sql = "SELECT COUNT(`username`) FROM `user_account` WHERE username='".$_POST["username"]."'";
         $row = $conn->query($sql)->fetch_assoc();
@@ -97,14 +100,15 @@
         //sleep(3);
         // header('location:registerAccount.php');
 
-        $stmt = $conn->prepare("INSERT INTO `user_account` (school_id, username, name, password, position) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $p_school_id, $p_username, $p_name, $p_password, $p_position);
+        $stmt = $conn->prepare("INSERT INTO `user_account` (school_id, username, name, password, position, permission) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $p_school_id, $p_username, $p_name, $p_password, $p_position, $p_permission);
 
         $p_school_id = $school_id;
         $p_username = $_POST["username"];
         $p_name = $_POST["name"];
         $p_password = $_POST["pwd"];
         $p_position = $_POST["position"];
+        $p_permission = 1;
         $stmt->execute();
         echo "insert success";
 
@@ -126,8 +130,8 @@
             <nav>
                 <ul class="flex-nav">
                     <li><a href="index.php">首頁</a></li>
-                    <li><a href="registerSchool.php">註冊學校</a></li>
-                    <li><a href="login.php">登入</a></li>
+                    <li><a href='member.php'>會員</a></li>
+                    <li><a href='index.php?logout=1'>登出</a></li>
                     <li><a href="#">介紹</a></li>
                     <li><a href="#">關於我們</a></li>
                 </ul>
@@ -169,17 +173,17 @@
                     <option value="U大學">大學</option>
                 </select>
                 學校名稱:
-                <input name="school_name" type="text" required="required">
+                <input name="school_name" type="text" required="required" pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="50">
             </p>
             <p>
                 帳號:
-                <input name="username" type="text" required="required">
+                <input name="username" type="text" pattern="^[\w@\.]+$" maxlength="100" required="required">
                 密碼:
-                <input name="pwd" type="password" required="required">
+                <input name="pwd" type="password" pattern="^[\w]+$" maxlength="50" required="required">
                 姓名:
-                <input name="name" type="text" required="required">
+                <input name="name" type="text" pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="50" required="required">
                 職位:
-                <input name="position" type="text" required="required">
+                <input name="position" type="text" pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="50" required="required">
                 <input type="submit" name="button" id="button" value="註冊">
             </p>
         </form>
