@@ -301,10 +301,11 @@
                     echo "<td>";
                     echo "<select name='updateAuthorClass[".$row["image_id"]."]'>";
                     while($rowBranch = $resultBranch->fetch_assoc()){
+                        $branchValueTemp = str_replace("*","年",$rowBranch["branch"]);
                         if($rowChooseData["author_class"] == $rowBranch["branch"])
-                            echo "<option value='".$rowBranch["branch"]."' selected='selected'>".$rowBranch["branch"]."</option>";
+                            echo "<option value='".$rowBranch["branch"]."' selected='selected'>".$branchValueTemp."</option>";
                         else
-                            echo "<option value='".$rowBranch["branch"]."'>".$rowBranch["branch"]."</option>";
+                            echo "<option value='".$rowBranch["branch"]."'>".$branchValueTemp."</option>";
                     }
                     echo "</select>";
                     echo "</td>";

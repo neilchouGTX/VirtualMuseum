@@ -29,7 +29,7 @@
     }
     
     if(isset($_POST["addBranch"]) && isset($_POST["branchYear"])){
-        $branchMerge = $_POST["branchYear"]."_".$_POST["addBranch"];
+        $branchMerge = $_POST["branchYear"]."*".$_POST["addBranch"];
         $phpDateTime = date ('Y-m-d H:i:s T');
         $sql = "INSERT INTO `".$school_id."_branch`(branch,branch_create_time) VALUES('".$branchMerge."','".$phpDateTime."')";
         try{
@@ -101,7 +101,7 @@
                 $sql = "SELECT `branch`,`branch_create_time` FROM `".$school_id."_branch`";
                 $result = $conn->query($sql);
                 while($row = $result->fetch_assoc()){
-                    $barnchSplit = explode("_",$row["branch"]);
+                    $barnchSplit = explode("*",$row["branch"]);
                     echo "<tr>";
                     echo "<td>";
                     echo $barnchSplit[1];
