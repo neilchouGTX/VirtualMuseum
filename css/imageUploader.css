@@ -1,6 +1,23 @@
+body{
+    font-family:sans-serif,Microsoft JhengHei;
+}
+.custom-file-upload {
+    border-radius: 40% 40% 0% 0%;
+    background-color: rgb(230, 230, 230);
+    font-size: 40px;
+    width:auto;
+    height: 50px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+input[type="file"] {
+    display: none;
+}
 #picID{
     height:auto;
-    width:300px;
+    width:250px;
     word-wrap:break-word;
     padding:20px;
 }
@@ -22,13 +39,79 @@
 }
 .image:hover{
     transform: scale(2);
+    z-index:2;
 }
-#picData{
+
+textarea{
+    height:100px;
+    width:200px;
+    resize: none;
+}
+.outerTable{
+    border:1px #cccccc solid;
+    font-size: 25px;
+    width : 90%;
+}
+.outerTable tr,td{
+    /* width:300px; */
+    border-top:2px #cccccc solid;
+    padding-left:30px;
+    padding-right:30px;
+}
+.pic_attribute_td{
+    width:20%;
+}
+.pic_td{
+    width:20%;
+}
+.time_td{
+    width:15%;
+}
+.delete_td{
+    width:10%;
+}
+.pic_data_td{
     height:auto;
     width:500px;
 }
-textarea{
-    height:200px;
+.innerTable{
+    /* border:3px #cccccc solid; */
+    width:500px;
+}
+.innerTable td{
+    border-top:1px #cccccc solid;
     width:auto;
-    resize: none;
+
+}
+.innerTable input,select{
+    width:200px;
+    height:30px;
+    font-size: 20px;
+}
+.operation{
+    display:flex;
+    justify-content: center;
+    position:fixed;
+    width:  100%;
+    height: auto;
+    bottom: 0px;
+
+}
+.operation button{
+    border-radius: 30px;
+    background-color:rgb(230, 230, 230);
+    font-size: 30px;
+    width:200px;
+    height: 50px;
+}
+.operation button:hover{
+    background-color: rgb(115, 115, 115);
+    font-size: 30px;
+    width:200px;
+    height: 50px;
+}
+.operation div{
+    flex:none;
+    
+    
 }

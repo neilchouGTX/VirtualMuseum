@@ -31,7 +31,7 @@
         mkdir("image/$school_id/$username/$dateOfToday",0755);
     }
     if(isset($_POST["action"])){
-        if($_POST["action"]=="delete"){
+        if($_POST["action"]=="delete" && isset($_POST["deletePictureID"])){
             $preDelete = $_POST["deletePictureID"];
             for($i=0; $i<count($preDelete); $i++){
                 unlink($_POST["deletePicturePath"][$preDelete[$i]]);
@@ -56,7 +56,7 @@
                 header("Location: imageUploader.php");
             }
         }
-        else if($_POST["action"]=="update"){
+        else if($_POST["action"]=="update" && isset($_POST["updateArtName"])){
             $preUpdate = $_POST["updateArtName"];
             foreach($preUpdate as $updateID => $updateValue ){
                 if($updateValue!=""){
@@ -141,38 +141,43 @@
         }
         for($i=0; $i<$total_count; $i++){
             $_FILES["fileUpload"]["name"][$i] = str_replace(" ", "_", $_FILES["fileUpload"]["name"][$i]); 
-            if(move_uploaded_file($_FILES["fileUpload"]["tmp_name"][$i],"image/$school_id/$username/$dateOfToday/".$_FILES["fileUpload"]["name"][$i])){
-                $sqlCheckDuplicate = "SELECT COUNT(`image_title`) FROM $school_id"."_image_attribute WHERE `image_title`='".$_FILES["fileUpload"]["name"][$i]."'" ;
-                $resultCheckDuplicate = $conn->query($sqlCheckDuplicate)->fetch_assoc();
-                if($resultCheckDuplicate["COUNT(`image_title`)"]==0){
-                    $stmt = $conn->prepare("INSERT INTO $school_id"."_image_attribute (image_id,uploader,image_title, image_path) VALUES (?,?,?,?);");
-                    $stmt -> bind_param("ssss",$pre_image_id,$username,$_FILES["fileUpload"]["name"][$i],$dir);
-                    $pre_image_id = $dateOfToday."_".str_pad(($numberOfToday+$i+1),4,"0",STR_PAD_LEFT);
-                    $dir = "image/$school_id/$username/$dateOfToday/".$_FILES["fileUpload"]["name"][$i];
-                    $stmt -> execute();
-                    $stmt -> close();
-
-                    $stmt = $conn->prepare("SELECT image_id FROM `$school_id"."_image_attribute` WHERE image_title=?");
-                    $stmt -> bind_param("s",$_FILES["fileUpload"]["name"][$i]);
-                    $stmt -> execute();
-                    $stmt -> bind_result($fetch_image_id);
-                    $stmt -> fetch();
-                    $stmt -> close();
-
-                    $stmt = $conn->prepare("INSERT INTO $school_id"."_image_data (image_id,art_upload_time) VALUES (?,?);");
-                    $phpDateTime = date ('Y-m-d H:i:s T');
-                    $stmt -> bind_param("ss",$fetch_image_id,$phpDateTime);
-                    $stmt -> execute();
-                    $stmt -> close();
+            $sqlCheckDuplicate = "SELECT COUNT(`image_title`) FROM $school_id"."_image_attribute WHERE `image_title`='".$_FILES["fileUpload"]["name"][$i]."' AND `uploader`='".$username."'" ;
+            $resultCheckDuplicate = $conn->query($sqlCheckDuplicate)->fetch_assoc();
+            if($resultCheckDuplicate["COUNT(`image_title`)"]==0){
+                if(move_uploaded_file($_FILES["fileUpload"]["tmp_name"][$i],"image/$school_id/$username/$dateOfToday/".$_FILES["fileUpload"]["name"][$i])){
+                    // $sqlCheckDuplicate = "SELECT COUNT(`image_title`) FROM $school_id"."_image_attribute WHERE `image_title`='".$_FILES["fileUpload"]["name"][$i]."'" ;
+                    // $resultCheckDuplicate = $conn->query($sqlCheckDuplicate)->fetch_assoc();
+                    // if($resultCheckDuplicate["COUNT(`image_title`)"]==0){
+                        $stmt = $conn->prepare("INSERT INTO $school_id"."_image_attribute (image_id,uploader,image_title, image_path) VALUES (?,?,?,?);");
+                        $stmt -> bind_param("ssss",$pre_image_id,$username,$_FILES["fileUpload"]["name"][$i],$dir);
+                        $pre_image_id = $dateOfToday."_".str_pad(($numberOfToday+$i+1),4,"0",STR_PAD_LEFT);
+                        $dir = "image/$school_id/$username/$dateOfToday/".$_FILES["fileUpload"]["name"][$i];
+                        $stmt -> execute();
+                        $stmt -> close();
+    
+                        $stmt = $conn->prepare("SELECT image_id FROM `$school_id"."_image_attribute` WHERE image_title=? AND uploader=?");
+                        $stmt -> bind_param("ss",$_FILES["fileUpload"]["name"][$i],$username);
+                        $stmt -> execute();
+                        $stmt -> bind_result($fetch_image_id);
+                        $stmt -> fetch();
+                        $stmt -> close();
+    
+                        $stmt = $conn->prepare("INSERT INTO $school_id"."_image_data (image_id,art_upload_time) VALUES (?,?);");
+                        $phpDateTime = date ('Y-m-d H:i:s T');
+                        $stmt -> bind_param("ss",$fetch_image_id,$phpDateTime);
+                        $stmt -> execute();
+                        $stmt -> close();
+                    // }
+                    
                 }
                 else{
-                    header("refresh:3;url=imageUploader.php");
-                    echo "重複檔名(".$_FILES["fileUpload"]["name"][$i].")上傳...即將返回";
-                    exit();
+                    $upload_flag = false;
                 }
             }
             else{
-                $upload_flag = false;
+                header("refresh:3;url=imageUploader.php");
+                echo "重複檔名(".$_FILES["fileUpload"]["name"][$i].")上傳...即將返回";
+                exit();
             }
         }
         if($upload_flag)
@@ -205,13 +210,16 @@
             </nav>   
         </header>
         <h1>歡迎<?php echo $mySqlName?>登入</h1>
-        <input type="button" value="回首頁" onclick="location.href='index.php'">
-        <input type="button" value="登出" onclick="location.href='index.php?logout=1'">
+        <!-- <input type="button" value="回首頁" onclick="location.href='index.php'">
+        <input type="button" value="登出" onclick="location.href='index.php?logout=1'"> -->
         
         <form method="post" enctype="multipart/form-data">
-            <input type="file" name="fileUpload[]" multiple="multiple"/>
+            <label for="file-upload" class="custom-file-upload">
+            點此上傳
+            </label>
+            <input id="file-upload" type="file" name="fileUpload[]" multiple="multiple" />
             <br>
-            <input type="submit" value="送出"/>
+            <input type="submit" value="送出" style="margin-top:20px;width:100px;height:50px;font-size:30px;"/>
         </form>
         <p>
             <?php
@@ -228,33 +236,34 @@
                 $resultBranch = $conn->query($sqlBranch);
 
                 $data_count = 0;
-                echo "<table style='border:3px #cccccc solid;' cellpadding='10' border='1' align=center>";
+                echo "<table class='outerTable' align=center>";
                 echo "<tr><th>圖片資訊</th><th>圖片預覽</th><th>上傳日期</th><th>刪除</th><th>修改資料</th></tr>";
                 echo "<form method='post'>";
                 while($row = $result->fetch_assoc()) {
                     mysqli_data_seek($resultArt,0);
                     mysqli_data_seek($resultBranch,0);
                     echo "<tr>";
-                    echo "<td>";
+                    echo "<td class='pic_attribute_td'>";
                     echo "<p id='picID' >圖片編號: ".$row["image_id"]."</br>"."圖片名稱: ".$row["image_title"]."</p>";
                     echo "</td>";
-                    echo "<td>";
+                    echo "<td class='pic_td'>";
                     echo "<div class='imageDiv'>";
                     echo "<img class='image' src='".$row["image_path"]."' alt='a pic'>";
                     echo "</div>";
                     echo "</td>";
                     $sqlImageData = "SELECT `art_upload_time` FROM `$school_id"."_image_data` WHERE image_id='".$row["image_id"]."'";
                     $resultImageData = $conn->query($sqlImageData)->fetch_assoc();
-                    echo "<td>";
-                    echo $resultImageData["art_upload_time"];
+                    $resultImageDataExplode = explode(" ",$resultImageData["art_upload_time"]);
+                    echo "<td class='time_td'>";
+                    echo $resultImageDataExplode[0]."</br>".$resultImageDataExplode[1];
                     echo "</td>";
-                    echo "<td align = center>";
-                    echo "<input type='checkbox' name='deletePictureID[]' value=".$row['image_id']." />
+                    echo "<td class='delete_td'>";
+                    echo "<input type='checkbox' name='deletePictureID[]' value=".$row['image_id']." style='width:50px;height:50px;'/>
                             <input type='hidden' name='deletePicturePath[".$row['image_id']."]' value=".$row['image_path']." />";
                     echo "</td>";
-                    echo "<td id='picData' align='left'>";
+                    echo "<td class='pic_data_td' align='left'>";
                     /*---------------------this is the start of inner table---------------------*/
-                    echo "<table style='border:3px #cccccc solid;' border='1'>";
+                    echo "<table class='innerTable' >";
                     $sqlChooseData = "SELECT `art_name`,`art_author`,`art_description`,`author_class` FROM `$school_id"."_image_data` WHERE image_id='".$row["image_id"]."'";
                     $resultChooseData = $conn->query($sqlChooseData);
                     $rowChooseData = $resultChooseData->fetch_assoc();
@@ -262,7 +271,7 @@
                     echo "<td>";
                     echo "作品名稱:";
                     echo "</td>";
-                    echo "<td style='width:400px;'>";
+                    echo "<td>";
                     echo "<input type='text' name='updateArtName[".$row["image_id"]."]' value='".$rowChooseData["art_name"]."' pattern='^[\w\u4e00-\u9fa5 ]+$' maxlength='50'/>";
                     echo "</td>";
                     echo "</tr>";
@@ -346,8 +355,10 @@
                 }
                 echo "</table>";
                 echo "<input name='data_count' type='hidden' value=$data_count></input>";
-                echo "<button type='submit' name='action' value='delete'>刪除</button>";
-                echo "<button type='submit' name='action' value='update'>更新資料</button>";
+                echo "<div class='operation'>";
+                echo "<div><button type='submit' name='action' value='delete'>刪除</button></div>";
+                echo "<div><button type='submit' name='action' value='update'>更新資料</button></div>";
+                echo "</div>";
                 echo "</form>";
                 $result->close();
             ?>
