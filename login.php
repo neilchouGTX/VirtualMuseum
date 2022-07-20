@@ -21,15 +21,15 @@
             $PWDerror = true;
         }
     }
-    if(isset($_COOKIE["counter"])){
-        $counter = $_COOKIE["counter"];
-        $counter++;
-        setcookie("counter",$counter,strtotime("Y-m-d 23:59:59"));
-    }
-    else{
-        setcookie("counter",1,strtotime("Y-m-d 23:59:59"));
-        header("Location: index.php");
-    }
+    // if(isset($_COOKIE["counter"])){
+    //     $counter = $_COOKIE["counter"];
+    //     $counter++;
+    //     setcookie("counter",$counter,strtotime("Y-m-d 23:59:59"));
+    // }
+    // else{
+    //     setcookie("counter",1,strtotime("Y-m-d 23:59:59"));
+    //     header("Location: index.php");
+    // }
     
 ?>
 <!DOCTYPE html>
@@ -54,7 +54,7 @@
             </nav>   
         </header>
         <h1>管理員登入系統</h1>
-        <h1>您登入:<?php echo $_COOKIE["counter"]?>次</h1>
+        <!-- <h1>您登入:<?php echo $_COOKIE["counter"]?>次</h1> -->
         <form method="post">
             <p>
                 帳號:

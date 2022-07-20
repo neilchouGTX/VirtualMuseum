@@ -195,8 +195,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/mainTheme.css" rel="stylesheet" type="text/css">
         <link href="css/imageUploader.css" rel="stylesheet" type="text/css">
+        
+        <!-- <script src="js/imageUploader.js"></script> -->
     </head>
-    <body align = center>
+    <body align = center >
         <header>
             <a href="index.php"><div class="logodiv"><img id="logoPic" src="img/newLogo.png"/></div></a>
             <nav>
@@ -308,7 +310,7 @@
                     echo "選擇班級:";
                     echo "</td>";
                     echo "<td>";
-                    echo "<select name='updateAuthorClass[".$row["image_id"]."]'>";
+                    echo "<select id='selectBranchForJS' name='updateAuthorClass[".$row["image_id"]."]'>";
                     while($rowBranch = $resultBranch->fetch_assoc()){
                         $branchValueTemp = str_replace("*","年",$rowBranch["branch"]);
                         if($rowChooseData["author_class"] == $rowBranch["branch"])
@@ -328,8 +330,14 @@
                     echo "<select name='updateArtPlace[".$row["image_id"]."]'>";
                     echo "<option value=''>預設</option>";
                     echo "<option value='remove'>全數移除</option>";
+
+                    // echo "<script type='text/javascript'>let jsvar=[];</script>";
+                    $rowArtTimes = 0;
+
                     while($rowArt = $resultArt->fetch_assoc()){
-                        echo "<option value='".$rowArt["art_place"]."'>".$rowArt["exhibition_hall"].$rowArt["art_place"]."</option>";
+                        echo "<option value='".$rowArt["art_place"]."' >".$rowArt["exhibition_hall"].$rowArt["art_place"]."</option>";
+                        // echo "<script type='text/javascript'>jsvar[$rowArtTimes]='".$rowArt["art_place"]."';</script>";
+                        $rowArtTimes++;
                     }
                     echo "</select>";
                     echo "</td>";
