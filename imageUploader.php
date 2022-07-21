@@ -238,7 +238,7 @@
                 $resultBranch = $conn->query($sqlBranch);
 
                 $data_count = 0;
-                echo "<table class='outerTable' align=center>";
+                echo "<table class='outerTable' align='center'>";
                 echo "<tr><th>圖片資訊</th><th>圖片預覽</th><th>上傳日期</th><th>刪除</th><th>修改資料</th></tr>";
                 echo "<form method='post'>";
                 while($row = $result->fetch_assoc()) {
@@ -246,11 +246,11 @@
                     mysqli_data_seek($resultBranch,0);
                     echo "<tr>";
                     echo "<td class='pic_attribute_td'>";
-                    echo "<p id='picID' >圖片編號: ".$row["image_id"]."</br>"."圖片名稱: ".$row["image_title"]."</p>";
+                    echo "<p id='picID' >圖片編號: ".$row["image_id"]."</br></br>"."圖片名稱: ".$row["image_title"]."</p>";
                     echo "</td>";
                     echo "<td class='pic_td'>";
                     echo "<div class='imageDiv'>";
-                    echo "<img class='image' src='".$row["image_path"]."' alt='a pic'>";
+                    echo "<img class='image' src='".$row["image_path"]."' alt='a pic'/>";
                     echo "</div>";
                     echo "</td>";
                     $sqlImageData = "SELECT `art_upload_time` FROM `$school_id"."_image_data` WHERE image_id='".$row["image_id"]."'";
@@ -371,5 +371,9 @@
                 $result->close();
             ?>
         </p>
+        <div class='hallPreview'>
+            <p>滑勝盾美術館1F</p>
+            <a href='img/G1F.jpg'><img src='img/G1F.jpg'/></a>
+        </div>
     </body>
 </html>
