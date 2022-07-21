@@ -111,7 +111,7 @@ textarea{
     transition: 0.3s ease-in-out;
 }
 .hallPreview img:hover{   
-    transform: scale(8);
+    transform: scale(6);
     transform-origin: right;
     z-index:4;    
 }
