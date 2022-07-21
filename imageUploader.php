@@ -221,7 +221,7 @@
             </label>
             <input id="file-upload" type="file" name="fileUpload[]" multiple="multiple" />
             <br>
-            <input type="submit" value="送出" style="margin-top:20px;width:100px;height:50px;font-size:30px;"/>
+            <input type="submit" value="上傳" style="margin-top:20px;width:100px;height:50px;font-size:30px;"/>
         </form>
         <p>
             <?php
@@ -374,6 +374,8 @@
         <div class='hallPreview'>
             <p>滑勝盾美術館1F</p>
             <a href='img/G1F.jpg'><img src='img/G1F.jpg'/></a>
+            <p>滑勝盾美術館2F</p>
+            <a href='img/G2F.jpg'><img src='img/G2F.jpg'/></a>
         </div>
     </body>
 </html>

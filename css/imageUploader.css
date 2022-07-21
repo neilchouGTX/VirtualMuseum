@@ -99,6 +99,9 @@ textarea{
     right:0px;
     top:0px;
 }
+.hallPreview p{
+    font-size: 20px;
+}
 .hallPreview a{
     width:100px;
     height:100px;

@@ -1,0 +1,23 @@
+.loginDiv{
+    background-color: rgb(230, 230, 230);
+    margin:auto;
+    padding: 10px;
+    text-align: center;
+    width:300px;
+    height:auto;
+    border: 1px solid;
+    font-size: larger;
+    border-radius: 20px;
+}
+.loginDiv input{
+    padding: 5px;
+    font-size: larger;
+    border-radius: 10px;
+}
+.loginDiv h2{
+    padding: 0px;
+    text-align: left;
+}
+.loginButton{
+    margin-top: 10px;
+}

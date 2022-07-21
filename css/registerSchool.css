@@ -1,0 +1,29 @@
+.registerDiv{
+    background-color: rgb(230, 230, 230);
+    margin:auto;
+    padding: 10px;
+    text-align: center;
+    width:300px;
+    height:auto;
+    border: 1px solid;
+    font-size: larger;
+    border-radius: 20px;
+}
+.registerDiv h2{
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.registerDiv input{
+    padding: 5px;
+    font-size: larger;
+    border-radius: 10px;
+}
+.registerDiv select{
+    padding: 5px;
+    font-size: larger;
+    border-radius: 10px;
+}
+.registerDiv input[type="submit"]{
+    margin-top: 30px;
+}

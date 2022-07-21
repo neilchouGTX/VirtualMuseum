@@ -123,6 +123,7 @@
         <title>虛擬美術館-註冊系統</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/mainTheme.css" rel="stylesheet" type="text/css"> 
+        <link href="css/registerSchool.css" rel="stylesheet" type="text/css"> 
     </head>
     <body align = center>
         <header>
@@ -139,8 +140,8 @@
         </header>
         <h1>註冊系統</h1>
         <form method="post">
-            <p>
-                縣市:
+            <div class='registerDiv'>
+                <h2>縣市:</h2>
                 <select name="city">
                     <option value="A台北市" selected>台北市</option>
                     <option value="B台中市">台中市</option>
@@ -165,27 +166,25 @@
                     <option value="X澎湖縣">澎湖縣</option>
                     <option value="Z連江縣">連江縣</option>
                 </select>
-                學校屬性:
+                <h2>學校屬性:</h2>
                 <select name="school_type">
                     <option value="E國小" selected>國小</option>
                     <option value="J國中">國中</option>
                     <option value="H高中">高中</option>
                     <option value="U大學">大學</option>
                 </select>
-                學校名稱:
+                <h2>學校名稱:</h2>
                 <input name="school_name" type="text" required="required" pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="50">
-            </p>
-            <p>
-                帳號:
+                <h2>帳號:</h2>
                 <input name="username" type="text" pattern="^[\w@\.]+$" maxlength="100" required="required">
-                密碼:
+                <h2>密碼:</h2>
                 <input name="pwd" type="password" pattern="^[\w]+$" maxlength="50" required="required">
-                姓名:
+                <h2>姓名:</h2>
                 <input name="name" type="text" pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="50" required="required">
-                職位:
+                <h2>職位:</h2>
                 <input name="position" type="text" pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="50" required="required">
                 <input type="submit" name="button" id="button" value="註冊">
-            </p>
+            </div>
         </form>
     </body>
 </html>

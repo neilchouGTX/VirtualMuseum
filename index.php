@@ -41,14 +41,14 @@
         </header>
         <main>
             <div class="mainvisual">    <!-- 視覺主圖設定-->
-                <img src="img/1.jfif">
+                <img src="img/mainVisual.png">
             </div>
         </main>
         <article id="profile">  <!-- 第一個articl區塊，命名為profile-->
             <div class="content">  <!-- 設定固定寬度-->
                 <h2>目前進度</h2>
-                <p>本週+上週的進度:網站首頁的排版完成</br>unity方面:完成了資料庫的連接，並且可以上傳且顯示圖片
-                    </br> unity的使用者觀看可以移動。</p>
+                <p>美術館圖框拉完了</br>
+                    </br></p>
             </div>
         </article>
         <div class="slider_container" style="display:none">
