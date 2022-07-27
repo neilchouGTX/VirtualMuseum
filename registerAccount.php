@@ -12,24 +12,25 @@
         $sql = "SELECT COUNT(`username`) FROM `user_account` WHERE school_id ='".$school_id."'";
         $result = $conn->query($sql)->fetch_assoc();
         if($result["COUNT(`username`)"] >= 4){
-            header("refresh:3;url=member.php");
+            header("refresh:2;url=registerAccount.php");
             echo "<h1>已加滿三個附屬成員，無法再加入了</h1>";
             exit();
         }
 
-        $stmt = $conn->prepare("INSERT INTO `user_account` (school_id, username, name, password, position, permission) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $p_school_id, $p_username, $p_name, $p_password, $p_position, $p_permission);
+        $stmt = $conn->prepare("INSERT INTO `user_account` (school_id, manager, username, name, password, position, permission) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssss", $p_school_id, $p_manager, $p_username, $p_name, $p_password, $p_position, $p_permission);
 
         $p_school_id = $school_id;
+        $p_manager = "manager".$result["COUNT(`username`)"];
         $p_username = $_POST["username"];
         $p_name = $_POST["name"];
         $p_password = $_POST["pwd"];
         $p_position = $_POST["position"];
         $p_permission = 2;
         $stmt->execute();
-        echo "insert success";
+        // echo "insert success";
         //sleep(2);
-        header('location:index.php');
+        // header('location:index.php');
     }
 ?>
 <!DOCTYPE html>
@@ -61,8 +62,8 @@
                 <input name="name" type="text" pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="50" required="required">
                 職位:
                 <input name="position" type="text" pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="50" required="required">
-                帳號:
-                <input name="username" type="text" pattern="^[\w@\.]+$" maxlength="100" required="required" required="required" >
+                電子郵件:
+                <input name="username" type="email"  maxlength="100" required="required" required="required" >
                 密碼:
                 <input name="pwd" type="password" pattern="^[\w]+$" maxlength="50" required="required">
                 <input type="submit" name="button" id="button" value="註冊">
@@ -70,13 +71,16 @@
         </form>
         <table style='border:3px #cccccc solid;' cellpadding='10' border='1' align=center >
         <?php 
-            $sql = "SELECT `username`,`permission` FROM `user_account` WHERE school_id ='".$school_id."'";
+            $sql = "SELECT `manager`,`username`,`permission` FROM `user_account` WHERE school_id ='".$school_id."'";
             $result = $conn->query($sql);
             echo "<tr>";
-            echo "<th>已新增成員</th><th>權限等級</th>";
+            echo "<th>管理員職位</th><th>已新增成員</th><th>權限等級</th>";
             echo "</tr>";
             while($row = $result->fetch_assoc()){
                 echo "<tr>";
+                echo "<td>";
+                echo $row["manager"];
+                echo "</td>";
                 echo "<td>";
                 echo $row["username"];
                 echo "</td>";

@@ -58,7 +58,7 @@
         <!-- <h1>您登入:<?php echo $_COOKIE["counter"]?>次</h1> -->
         <form method="post">
             <div class='loginDiv'>
-                <h2>帳號:</h2>
+                <h2>電子郵件:</h2>
                 <input name="username" type="text" pattern="^[\w@\.]+$" maxlength="100">
                 <h2>密碼:</h2>
                 <input name="password" type="password" pattern="[\w]+$" maxlength="50">

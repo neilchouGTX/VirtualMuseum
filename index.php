@@ -5,9 +5,6 @@
         session_unset();
         header("Location: index.php");
     }
-    // if((isset($_SESSION["username"])) && ($_SESSION["username"]!="")){
-    //     header("Location: member.php");
-    // }
 ?>
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">

@@ -19,6 +19,7 @@ CREATE TABLE `city_table`(
 
 CREATE TABLE `user_account`(
   	school_id VARCHAR(6),
+    manager VARCHAR(20),
    	username VARCHAR(100) NOT NULL,
     name VARCHAR(50) NOT NULL,
     password VARCHAR(50) NOT NULL,
@@ -28,8 +29,8 @@ CREATE TABLE `user_account`(
     FOREIGN KEY(school_id) REFERENCES `city_table`(school_id)
 );
 
-INSERT INTO user_account(username,name,password,position,permission)
-VALUES ("admin","admin","1990","admin",0);
+INSERT INTO user_account(manager,username,name,password,position,permission)
+VALUES ("system_admin","admin","admin","1990","admin",0);
 
 CREATE TABLE `museum_hall`(
 	exhibition_hall VARCHAR(30),
@@ -152,8 +153,7 @@ CREATE TABLE `AJ001_image_attribute`(
     image_path VARCHAR(500),
     voice_title VARCHAR(300),
     voice_path VARCHAR(500),
-    PRIMARY KEY(image_id),
-    FOREIGN KEY(uploader) REFERENCES `user_account`(username)
+    PRIMARY KEY(image_id)
 );
 
 CREATE TABLE `AJ001_exhibition_hall`(

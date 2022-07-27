@@ -5,14 +5,15 @@
     if((!isset($_SESSION["username"])) || ($_SESSION["username"]=="")){
         header("Location: index.php");
     }
-    $stmt = $conn->prepare("SELECT `school_id`,`name` FROM `user_account` WHERE username=?");
+    $stmt = $conn->prepare("SELECT `manager`,`school_id`,`name` FROM `user_account` WHERE username=?");
     $stmt -> bind_param("s",$_SESSION["username"]); 
     $stmt -> execute();
-    $stmt -> bind_result($school_id,$mySqlName);
+    $stmt -> bind_result($manager,$school_id,$mySqlName);
     $stmt -> fetch();
     $stmt -> close();
     $username = $_SESSION["username"];
-
+    $cityFirstLetter = substr($school_id,0,1);
+    
     $sql = "SELECT COUNT(`branch`) FROM `".$school_id."_branch`";
     $result = $conn->query($sql)->fetch_assoc();
     if($result["COUNT(`branch`)"]==0){
@@ -20,15 +21,18 @@
         echo "<h1>請先新增至少一個班級，即將跳轉...</h1>";
         exit();
     }    
-    $dateOfToday = date('Ymd');
-    if(!file_exists("image/$school_id/")){
-        mkdir("image/$school_id",0755);
+    $dateOfYear = date('Y');
+    if(!file_exists("image/$cityFirstLetter/")){
+        mkdir("image/$cityFirstLetter",0755);
     }
-    if(!file_exists("image/$school_id/$username")){
-        mkdir("image/$school_id/$username",0755);
+    if(!file_exists("image/$cityFirstLetter/$school_id/")){
+        mkdir("image/$cityFirstLetter/$school_id",0755);
     }
-    if(!file_exists("image/$school_id/$username/$dateOfToday")){
-        mkdir("image/$school_id/$username/$dateOfToday",0755);
+    if(!file_exists("image/$cityFirstLetter/$school_id/$manager/")){
+        mkdir("image/$cityFirstLetter/$school_id/$manager",0755);
+    }
+    if(!file_exists("image/$cityFirstLetter/$school_id/$manager/$dateOfYear/")){
+        mkdir("image/$cityFirstLetter/$school_id/$manager/$dateOfYear",0755);
     }
     if(isset($_POST["action"])){
         if($_POST["action"]=="delete" && isset($_POST["deletePictureID"])){
@@ -108,23 +112,9 @@
                 
                 }
             }
-            //print_r($preUpdate);
         }
 
     }
-    // if(isset($_POST["deletePicture"])){
-    //     unlink("image/$school_id/$username/".$_POST["deletePicture"]["title"]);
-    //     $stmt = $conn->prepare("DELETE FROM `$school_id"."_image_data` WHERE image_id= ?");
-    //     $stmt -> bind_param("s",$_POST["deletePicture"]["id"]);
-    //     $stmt -> execute();
-    //     $stmt -> close();
-
-    //     $stmt = $conn->prepare("DELETE FROM `$school_id"."_image_attribute` WHERE image_id= ?");
-    //     $stmt -> bind_param("s",$_POST["deletePicture"]["id"]);
-    //     $stmt -> execute();
-    //     $stmt -> close();
-    //     header("Location: imageUploader.php");
-    // }
     if(isset($_FILES["fileUpload"]["name"]) && $_FILES["fileUpload"]["error"][0]==0){
         $total_count = count($_FILES["fileUpload"]["name"]);
         $upload_flag = true;
@@ -141,22 +131,22 @@
         }
         for($i=0; $i<$total_count; $i++){
             $_FILES["fileUpload"]["name"][$i] = str_replace(" ", "_", $_FILES["fileUpload"]["name"][$i]); 
-            $sqlCheckDuplicate = "SELECT COUNT(`image_title`) FROM $school_id"."_image_attribute WHERE `image_title`='".$_FILES["fileUpload"]["name"][$i]."' AND `uploader`='".$username."'" ;
+            $sqlCheckDuplicate = "SELECT COUNT(`image_title`) FROM $school_id"."_image_attribute WHERE `image_title`='".$_FILES["fileUpload"]["name"][$i]."' AND `uploader`='".$manager."'" ;
             $resultCheckDuplicate = $conn->query($sqlCheckDuplicate)->fetch_assoc();
             if($resultCheckDuplicate["COUNT(`image_title`)"]==0){
-                if(move_uploaded_file($_FILES["fileUpload"]["tmp_name"][$i],"image/$school_id/$username/$dateOfToday/".$_FILES["fileUpload"]["name"][$i])){
+                if(move_uploaded_file($_FILES["fileUpload"]["tmp_name"][$i],"image/$cityFirstLetter/$school_id/$manager/$dateOfYear/".$_FILES["fileUpload"]["name"][$i])){
                     // $sqlCheckDuplicate = "SELECT COUNT(`image_title`) FROM $school_id"."_image_attribute WHERE `image_title`='".$_FILES["fileUpload"]["name"][$i]."'" ;
                     // $resultCheckDuplicate = $conn->query($sqlCheckDuplicate)->fetch_assoc();
                     // if($resultCheckDuplicate["COUNT(`image_title`)"]==0){
                         $stmt = $conn->prepare("INSERT INTO $school_id"."_image_attribute (image_id,uploader,image_title, image_path) VALUES (?,?,?,?);");
-                        $stmt -> bind_param("ssss",$pre_image_id,$username,$_FILES["fileUpload"]["name"][$i],$dir);
+                        $stmt -> bind_param("ssss",$pre_image_id,$manager,$_FILES["fileUpload"]["name"][$i],$dir);
                         $pre_image_id = $dateOfToday."_".str_pad(($numberOfToday+$i+1),4,"0",STR_PAD_LEFT);
-                        $dir = "image/$school_id/$username/$dateOfToday/".$_FILES["fileUpload"]["name"][$i];
+                        $dir = "image/$cityFirstLetter/$school_id/$manager/$dateOfYear/".$_FILES["fileUpload"]["name"][$i];
                         $stmt -> execute();
                         $stmt -> close();
     
                         $stmt = $conn->prepare("SELECT image_id FROM `$school_id"."_image_attribute` WHERE image_title=? AND uploader=?");
-                        $stmt -> bind_param("ss",$_FILES["fileUpload"]["name"][$i],$username);
+                        $stmt -> bind_param("ss",$_FILES["fileUpload"]["name"][$i],$manager);
                         $stmt -> execute();
                         $stmt -> bind_result($fetch_image_id);
                         $stmt -> fetch();
@@ -225,10 +215,8 @@
         </form>
         <p>
             <?php
-                // $file=scandir("image/$username");
-                // print_r($file);
 
-                $sql = "SELECT `image_id`,`image_path`,`image_title` FROM `$school_id"."_image_attribute` WHERE uploader='$username'";
+                $sql = "SELECT `image_id`,`image_path`,`image_title` FROM `$school_id"."_image_attribute` WHERE uploader='$manager'";
                 $result = $conn->query($sql);
 
                 $sqlArt = "SELECT * FROM `museum_hall`";

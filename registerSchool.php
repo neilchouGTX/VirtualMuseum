@@ -53,8 +53,7 @@
             image_path VARCHAR(500),
             voice_title VARCHAR(300),
             voice_path VARCHAR(500),
-            PRIMARY KEY(image_id),
-            FOREIGN KEY(uploader) REFERENCES `user_account`(username)
+            PRIMARY KEY(image_id)
             );";       
         if ($conn->query($sql) === TRUE) {
             echo "Table ".$school_id."_image_attribute created successfully\n";
@@ -100,8 +99,8 @@
         //sleep(3);
         // header('location:registerAccount.php');
 
-        $stmt = $conn->prepare("INSERT INTO `user_account` (school_id, username, name, password, position, permission) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $p_school_id, $p_username, $p_name, $p_password, $p_position, $p_permission);
+        $stmt = $conn->prepare("INSERT INTO `user_account` (school_id, username, name, password, position, permission, manager) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssss", $p_school_id, $p_username, $p_name, $p_password, $p_position, $p_permission, $p_manager);
 
         $p_school_id = $school_id;
         $p_username = $_POST["username"];
@@ -109,6 +108,7 @@
         $p_password = $_POST["pwd"];
         $p_position = $_POST["position"];
         $p_permission = 1;
+        $p_manager = "supervisor";
         $stmt->execute();
         echo "insert success";
 
@@ -175,8 +175,8 @@
                 </select>
                 <h2>學校名稱:</h2>
                 <input name="school_name" type="text" required="required" pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="50">
-                <h2>帳號:</h2>
-                <input name="username" type="text" pattern="^[\w@\.]+$" maxlength="100" required="required">
+                <h2>電子郵件:</h2>
+                <input name="username" type="email" maxlength="100" required="required">
                 <h2>密碼:</h2>
                 <input name="pwd" type="password" pattern="^[\w]+$" maxlength="50" required="required">
                 <h2>姓名:</h2>
