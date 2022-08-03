@@ -1,8 +1,8 @@
 <?php
     require_once("connMysql.php");
-    if(isset($_GET["branch"]) && isset($_GET["art_place"]) && isset($_GET["school_id"])){
-        $stmt = $conn->prepare("SELECT `image_id` FROM `".$_GET["school_id"]."_exhibition_hall` WHERE branch=? AND art_place=?");
-        $stmt -> bind_param("ss",$_GET["branch"],$_GET["art_place"]);    
+    if(isset($_GET["museum_name"]) && isset($_GET["art_place"]) && isset($_GET["school_id"])){
+        $stmt = $conn->prepare("SELECT `image_id` FROM `".$_GET["school_id"]."_exhibition_hall` WHERE exhibition_name=? AND art_place=?");
+        $stmt -> bind_param("ss",$_GET["museum_name"],$_GET["art_place"]);    
         $stmt -> execute();
         $stmt -> bind_result($fetch_image_id);
         $stmt -> fetch();

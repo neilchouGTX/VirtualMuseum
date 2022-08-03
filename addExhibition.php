@@ -10,8 +10,8 @@
     $school_id =  $row["school_id"];
     $mySqlName =  $row["name"];
     
-    if(isset($_POST["deleteBranch"])){
-        $preDelete = $_POST["deleteBranch"];
+    if(isset($_POST["deleteExh"])){
+        $preDelete = $_POST["deleteExh"];
         for($i=0; $i<count($preDelete); $i++){
             // $sql = "SELECT COUNT(`author_class`) FROM `".$school_id."_image_data`";
             // $result = $conn->query($sql)->fetch_assoc();
@@ -19,19 +19,19 @@
             //     echo "<h1>請先刪除全部該班級的圖片</h1>";
             // }
             // else{
-                // $sql = "DELETE FROM `".$school_id."_exhibition_hall` WHERE branch='".$preDelete[$i]."'";
-                // $conn->query($sql);
-                $sql = "DELETE FROM `".$school_id."_branch` WHERE branch='".$preDelete[$i]."'";
+                $sql = "DELETE FROM `".$school_id."_exhibition_hall` WHERE exhibition_name='".$preDelete[$i]."'";
                 $conn->query($sql);
-                header("Location: branch.php");
+                $sql = "DELETE FROM `".$school_id."_exhibition_name` WHERE exhibition_name='".$preDelete[$i]."'";
+                $conn->query($sql);
+                header("Location: addExhibition.php");
             // }
         }
     }
     
-    if(isset($_POST["addBranch"]) && isset($_POST["branchYear"])){
-        $branchMerge = $_POST["branchYear"]."*".$_POST["addBranch"];
+    if(isset($_POST["addExh"]) && isset($_POST["addMuseum"])){
+        // $branchMerge = $_POST["branchYear"]."*".$_POST["addBranch"];
         $phpDateTime = date ('Y-m-d H:i:s T');
-        $sql = "INSERT INTO `".$school_id."_branch`(branch,branch_create_time) VALUES('".$branchMerge."','".$phpDateTime."')";
+        $sql = "INSERT INTO `".$school_id."_exhibition_name`(exhibition_name,exhibition_museum,exhibition_name_create_time) VALUES('".$_POST["addExh"]."','".$_POST["addMuseum"]."','".$phpDateTime."')";
         try{
             if($conn->query($sql)){
                 echo "insert success";
@@ -60,7 +60,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>虛擬美術館-編輯班級</title>
+        <title>虛擬美術館-編輯美術館</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/mainTheme.css" rel="stylesheet" type="text/css"> 
         <style>
@@ -84,9 +84,18 @@
         </header>
         <h1>歡迎<?php echo $mySqlName?>登入</h1>
         <h2>新增班級:</h2>
+
         <form method='post'>
-            班級名稱:<input type='text' name='addBranch' pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="40" required="required"/>
-            入學年度(西元):<input type='text' name='branchYear' pattern="^[\d]+$" maxlength="4" required="required"/>
+            美術館名稱:<input type='text' name='addExh' pattern="^[\w\u4e00-\u9fa5 ]+$" maxlength="40" required="required"/>
+            <?php
+                $sql = "SELECT DISTINCT `exhibition_hall` FROM `museum_hall`";
+                $result = $conn->query($sql);
+                echo "<select name='addMuseum'>";
+                while($row = $result->fetch_assoc()){
+                    echo "<option value='".$row["exhibition_hall"]."'>".$row["exhibition_hall"]."</option>";
+                }
+                echo "</select>";
+            ?>
             <button type='submit'>增加</button>
         </form>
         </br>
@@ -94,26 +103,25 @@
         <form method='post'>
         <table style='border:3px #cccccc solid;' cellpadding='10' border='1' align=center >
             <tr>
-                <th>班級</th><th>入學年度</th><th>創立日期</th><th>刪除</th>
+                <th>美術館名稱</th><th>美術館</th><th>創立日期</th><th>刪除</th>
             </tr>
             
             <?php
-                $sql = "SELECT `branch`,`branch_create_time` FROM `".$school_id."_branch`";
+                $sql = "SELECT `exhibition_name`,`exhibition_museum`,`exhibition_name_create_time` FROM `".$school_id."_exhibition_name`";
                 $result = $conn->query($sql);
                 while($row = $result->fetch_assoc()){
-                    $barnchSplit = explode("*",$row["branch"]);
                     echo "<tr>";
                     echo "<td>";
-                    echo $barnchSplit[1];
+                    echo $row["exhibition_name"];
                     echo "</td>";
                     echo "<td>";
-                    echo $barnchSplit[0];
+                    echo $row["exhibition_museum"];
                     echo "</td>";
                     echo "<td>";
-                    echo $row["branch_create_time"];
+                    echo $row["exhibition_name_create_time"];
                     echo "</td>";
                     echo "<td>";
-                    echo "<input type='checkbox' name='deleteBranch[]' value='".$row["branch"]."' />";
+                    echo "<input type='checkbox' name='deleteExh[]' value='".$row["exhibition_name"]."' />";
                     echo "</td>";
                     echo "</tr>";
                 }

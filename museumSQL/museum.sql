@@ -3,6 +3,7 @@ DROP TABLE if exists `AJ001_image_data`;
 DROP TABLE if exists `AJ001_exhibition_hall`;
 DROP TABLE if exists `AJ001_image_attribute`;
 DROP TABLE if exists `AJ001_branch`;
+DROP TABLE if exists `AJ001_exhibition_name`;
 DROP TABLE if exists `museum_hall`;
 DROP TABLE if exists `user_account`;
 DROP TABLE if exists `city_table`;
@@ -146,6 +147,13 @@ CREATE TABLE `AJ001_branch`(
     PRIMARY KEY(branch)
 );
 
+CREATE TABLE `AJ001_exhibition_name`(
+	exhibition_name VARCHAR(50),
+    exhibition_museum VARCHAR(30),
+    exhibition_name_create_time DATETIME,
+    PRIMARY KEY(exhibition_name)
+);
+
 CREATE TABLE `AJ001_image_attribute`(
 	image_id VARCHAR(15) NOT NULL,
     uploader VARCHAR(20),
@@ -158,12 +166,11 @@ CREATE TABLE `AJ001_image_attribute`(
 
 CREATE TABLE `AJ001_exhibition_hall`(
     image_id VARCHAR(15),
-    branch VARCHAR(50),
+    exhibition_name VARCHAR(50),
     art_place VARCHAR(10),
     FOREIGN KEY(image_id) REFERENCES `AJ001_image_attribute`(image_id),
-    FOREIGN KEY(branch) REFERENCES `AJ001_branch`(branch),
     FOREIGN KEY(art_place) REFERENCES `museum_hall`(art_place),
-    PRIMARY KEY(branch,art_place)
+    PRIMARY KEY(exhibition_name,art_place)
 );
 
 CREATE TABLE `AJ001_image_data`(
@@ -174,7 +181,6 @@ CREATE TABLE `AJ001_image_data`(
     author_class VARCHAR(50),
     art_upload_time DATETIME,
 	PRIMARY KEY(image_id),
-    FOREIGN KEY(image_id) REFERENCES `AJ001_image_attribute`(image_id),
-    FOREIGN KEY(author_class) REFERENCES `AJ001_branch`(branch)
+    FOREIGN KEY(image_id) REFERENCES `AJ001_image_attribute`(image_id)
 );
 */

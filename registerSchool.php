@@ -45,6 +45,19 @@
             echo "Table ".$school_id."_branch created error: ".$conn->error;
         }
 
+        $sql = "CREATE TABLE ".$school_id."_exhibition_name";
+        $sql = $sql."(
+            exhibition_name VARCHAR(50),
+            exhibition_museum VARCHAR(30),
+            exhibition_name_create_time DATETIME,
+            PRIMARY KEY(exhibition_name)
+            );";       
+        if ($conn->query($sql) === TRUE) {
+            echo "Table ".$school_id."_branch created successfully\n";
+        } else {
+            echo "Table ".$school_id."_branch created error: ".$conn->error;
+        }
+
         $sql = "CREATE TABLE ".$school_id."_image_attribute";
         $sql = $sql."(
             image_id VARCHAR(15) NOT NULL,
@@ -64,12 +77,11 @@
         $sql = "CREATE TABLE ".$school_id."_exhibition_hall";
         $sql = $sql."(
             image_id VARCHAR(15),
-            branch VARCHAR(50),
+            exhibition_name VARCHAR(50),
             art_place VARCHAR(10),
             FOREIGN KEY(image_id) REFERENCES `".$school_id."_image_attribute`(image_id),
-            FOREIGN KEY(branch) REFERENCES `".$school_id."_branch`(branch),
             FOREIGN KEY(art_place) REFERENCES `museum_hall`(art_place),
-            PRIMARY KEY(branch,art_place)
+            PRIMARY KEY(exhibition_name,art_place)
             );";       
         if ($conn->query($sql) === TRUE) {
             echo "Table ".$school_id."_exhibition_hall created successfully\n";
@@ -86,8 +98,7 @@
             author_class VARCHAR(50),
             art_upload_time DATETIME,
             PRIMARY KEY(image_id),
-            FOREIGN KEY(image_id) REFERENCES `".$school_id."_image_attribute`(image_id),
-            FOREIGN KEY(author_class) REFERENCES `".$school_id."_branch`(branch)
+            FOREIGN KEY(image_id) REFERENCES `".$school_id."_image_attribute`(image_id)
             );";       
         if ($conn->query($sql) === TRUE) {
             echo "Table ".$school_id."_image_data created successfully\n";

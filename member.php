@@ -45,11 +45,13 @@
             else if($permission==1){
                 echo "<input type='button' value='上傳圖片' onclick='location.href=\"imageUploader.php\"' style='width:120px;height:40px;font-size:20px;'>";
                 echo "<input type='button' value='編輯班級' onclick='location.href=\"branch.php\"' style='width:120px;height:40px;font-size:20px;'>";
+                echo "<input type='button' value='編輯美術館' onclick='location.href=\"addExhibition.php\"' style='width:120px;height:40px;font-size:20px;'>";
                 echo "<input type='button' value='新增管理員' onclick='location.href=\"registerAccount.php\"' style='width:120px;height:40px;font-size:20px;'>";
             }
             else{
                 echo "<input type='button' value='上傳圖片' onclick='location.href=\"imageUploader.php\"' style='width:120px;height:40px;font-size:20px;'>";
                 echo "<input type='button' value='編輯班級' onclick='location.href=\"branch.php\"' style='width:120px;height:40px;font-size:20px;'>";
+                echo "<input type='button' value='編輯美術館' onclick='location.href=\"addExhibition.php\"' style='width:120px;height:40px;font-size:20px;'>";
             }
         ?>
     </body>

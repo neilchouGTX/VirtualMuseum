@@ -14,13 +14,13 @@
     $username = $_SESSION["username"];
     $cityFirstLetter = substr($school_id,0,1);
     
-    $sql = "SELECT COUNT(`branch`) FROM `".$school_id."_branch`";
-    $result = $conn->query($sql)->fetch_assoc();
-    if($result["COUNT(`branch`)"]==0){
-        header("refresh:3;url=branch.php");
-        echo "<h1>請先新增至少一個班級，即將跳轉...</h1>";
-        exit();
-    }    
+    // $sql = "SELECT COUNT(`branch`) FROM `".$school_id."_branch`";
+    // $result = $conn->query($sql)->fetch_assoc();
+    // if($result["COUNT(`branch`)"]==0){
+    //     header("refresh:3;url=branch.php");
+    //     echo "<h1>請先新增至少一個班級，即將跳轉...</h1>";
+    //     exit();
+    // }    
     $dateOfYear = date('Y');
     if(!file_exists("image/$cityFirstLetter/")){
         mkdir("image/$cityFirstLetter",0755);
@@ -82,32 +82,39 @@
                 $conn->query($sql);
                 }
             }
-            $preUpdate = $_POST["updateAuthorClass"];
-            foreach($preUpdate as $updateID => $updateValue ){
-                if($updateValue!=""){
-                $sql = "UPDATE `$school_id"."_image_data` SET author_class='$updateValue' WHERE image_id='$updateID'";
-                $conn->query($sql);
+            if(isset($_POST["updateAuthorClass"])){
+                $preUpdate = $_POST["updateAuthorClass"];
+                foreach($preUpdate as $updateID => $updateValue ){
+                    if($updateValue!=""){
+                    $sql = "UPDATE `$school_id"."_image_data` SET author_class='$updateValue' WHERE image_id='$updateID'";
+                    $conn->query($sql);
+                    }
                 }
             }
+            
             $preUpdate = $_POST["updateArtPlace"];
             foreach($preUpdate as $updateID => $updateValue ){
                 if($updateValue!=""){
+                    $artPlaceExplode = explode("&",$updateValue);
                     if($updateValue=="remove"){
-                        $sql = "SELECT `art_place` FROM `$school_id"."_exhibition_hall` WHERE image_id='$updateID' ";
-                        $result = $conn->query($sql);
-                        if(isset($result)){
-                            while($row = $result->fetch_assoc()){
-                                $sql = "UPDATE `$school_id"."_exhibition_hall` SET image_id=NULL WHERE art_place='".$row["art_place"]."'";
-                                $conn->query($sql);
-                            }
+                        $sql = "SELECT COUNT(*) FROM `$school_id"."_exhibition_hall` WHERE image_id='$updateID'";
+                        $row = $conn->query($sql)->fetch_assoc();
+                        if($row["COUNT(*)"]!=0){
+                            $sql = "DELETE FROM `$school_id"."_exhibition_hall` WHERE image_id='$updateID'";
+                            $conn->query($sql);
                         }
                     }
                     else{
-                        $sql = "SELECT `author_class` FROM `$school_id"."_image_data` WHERE image_id='$updateID'";
+                        $sql = "SELECT COUNT(*) FROM `$school_id"."_exhibition_hall` WHERE exhibition_name='$artPlaceExplode[0]' and art_place='$artPlaceExplode[2]'";
                         $row = $conn->query($sql)->fetch_assoc();
-
-                        $sql = "UPDATE `$school_id"."_exhibition_hall` SET image_id='$updateID' WHERE art_place='$updateValue' AND branch='".$row["author_class"]."'";
-                        $conn->query($sql);
+                        if($row["COUNT(*)"]==0){
+                            $sql = "INSERT INTO `$school_id"."_exhibition_hall` (image_id,exhibition_name,art_place) VALUES ('$updateID','$artPlaceExplode[0]','$artPlaceExplode[2]')";
+                            $conn->query($sql);
+                        }
+                        else{
+                            $sql = "UPDATE `$school_id"."_exhibition_hall` SET image_id='$updateID' WHERE exhibition_name='$artPlaceExplode[0]' and art_place='$artPlaceExplode[2]'";
+                            $conn->query($sql);
+                        }
                     }
                 
                 }
@@ -219,19 +226,23 @@
                 $sql = "SELECT `image_id`,`image_path`,`image_title` FROM `$school_id"."_image_attribute` WHERE uploader='$manager'";
                 $result = $conn->query($sql);
 
-                $sqlArt = "SELECT * FROM `museum_hall`";
-                $resultArt = $conn->query($sqlArt);
+                // $sqlArt = "SELECT * FROM `museum_hall`";
+                // $resultArt = $conn->query($sqlArt);
 
                 $sqlBranch = "SELECT * FROM `$school_id"."_branch`";
                 $resultBranch = $conn->query($sqlBranch);
+
+                $sqlExhibition = "SELECT `exhibition_name`,`exhibition_museum` FROM `$school_id"."_exhibition_name`";
+                $resultExhibition = $conn->query($sqlExhibition);
 
                 $data_count = 0;
                 echo "<table class='outerTable' align='center'>";
                 echo "<tr><th>圖片資訊</th><th>圖片預覽</th><th>上傳日期</th><th>刪除</th><th>修改資料</th></tr>";
                 echo "<form method='post'>";
                 while($row = $result->fetch_assoc()) {
-                    mysqli_data_seek($resultArt,0);
+                    // mysqli_data_seek($resultArt,0);
                     mysqli_data_seek($resultBranch,0);
+                    mysqli_data_seek($resultExhibition,0);
                     echo "<tr>";
                     echo "<td class='pic_attribute_td'>";
                     echo "<p id='picID' >圖片編號: ".$row["image_id"]."</br></br>"."圖片名稱: ".$row["image_title"]."</p>";
@@ -299,6 +310,7 @@
                     echo "</td>";
                     echo "<td>";
                     echo "<select id='selectBranchForJS' name='updateAuthorClass[".$row["image_id"]."]'>";
+                    echo "<option value='empty'>"."無"."</option>";
                     while($rowBranch = $resultBranch->fetch_assoc()){
                         $branchValueTemp = str_replace("*","年",$rowBranch["branch"]);
                         if($rowChooseData["author_class"] == $rowBranch["branch"])
@@ -310,7 +322,17 @@
                     echo "</td>";
                     echo "</tr>";
                     
-                    echo "<tr>";
+                    // echo "<tr>";
+                    // echo "<td>";
+                    // echo "選擇展館:";
+                    // echo "</td>";
+                    // echo "<td>"; 
+                    // echo "<select name='updateExhibition[".$row["image_id"]."]'>";
+                    // $resultExhibition
+                    // echo "</td>";
+                    // echo "</tr>";
+                    // echo "<tr>";
+
                     echo "<td>";
                     echo "選擇擺放位置:";
                     echo "</td>";
@@ -319,19 +341,21 @@
                     echo "<option value=''>預設</option>";
                     echo "<option value='remove'>全數移除</option>";
 
-                    // echo "<script type='text/javascript'>let jsvar=[];</script>";
-                    $rowArtTimes = 0;
-
-                    while($rowArt = $resultArt->fetch_assoc()){
-                        echo "<option value='".$rowArt["art_place"]."' >".$rowArt["exhibition_hall"].$rowArt["art_place"]."</option>";
-                        // echo "<script type='text/javascript'>jsvar[$rowArtTimes]='".$rowArt["art_place"]."';</script>";
-                        $rowArtTimes++;
+                    while($rowExh = $resultExhibition->fetch_assoc()){
+                        // $rowExh["exhibition_museum"]
+                        $sqlArt = "SELECT `art_place` FROM `museum_hall` WHERE exhibition_hall='".$rowExh["exhibition_museum"]."'";
+                        $resultArt = $conn->query($sqlArt);
+                        while($rowArt = $resultArt->fetch_assoc()){
+                            $tempArt = $rowExh["exhibition_name"]."&".$rowExh["exhibition_museum"]."&".$rowArt["art_place"];
+                            echo "<option value='".$tempArt."' >".$tempArt."</option>";
+                        }
                     }
+                    
                     echo "</select>";
                     echo "</td>";
                     echo "</tr>";
 
-                    $sqlFindHall = "SELECT `branch`,`art_place` FROM `$school_id"."_exhibition_hall` WHERE image_id='".$row['image_id']."'";
+                    $sqlFindHall = "SELECT `exhibition_name`,`art_place` FROM `$school_id"."_exhibition_hall` WHERE image_id='".$row['image_id']."'";
                     $resultFindHall = $conn->query($sqlFindHall);
                     echo "<tr>";
                     echo "<td>";
@@ -339,7 +363,7 @@
                     echo "</td>";
                     echo "<td>";
                     while($rowFindHall = $resultFindHall->fetch_assoc()){
-                        echo $rowFindHall["branch"]."班的".$rowFindHall["art_place"]."畫框</br>";
+                        echo $rowFindHall["exhibition_name"]."展的".$rowFindHall["art_place"]."畫框</br>";
                     }
                     echo "</td>";
                     echo "</tr>";
