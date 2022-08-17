@@ -98,11 +98,16 @@ th {
 }
 /* 簡介調整了背景色與文字顏色 */
 #profile {
-    background-color:#3E2F19;
+    background-color:#c2a983;
     color: #ffffff;
 }
 #profile h2 {
-    color:#DDD7CE;
+    font-size: 60px;
+    color:#141311;
+}
+#profile a {
+    font-size: 40px;
+    color:#141311;
 }
 
 /* 設定了內容寬度的上限 */

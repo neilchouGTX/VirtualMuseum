@@ -43,9 +43,18 @@
         </main>
         <article id="profile">  <!-- 第一個articl區塊，命名為profile-->
             <div class="content">  <!-- 設定固定寬度-->
-                <h2>目前進度</h2>
-                <p>美術館圖框拉完了</br>
-                    </br></p>
+                <h2>參觀列表</h2>
+                <?php
+                    $sql = "SELECT `school_id`,`city`,`name` FROM city_table";
+                    $result = $conn->query($sql);
+                    while($row = $result->fetch_assoc()){
+                        echo "<p>";
+                        echo "<a href=\"webgl/index.html?school_id=".$row["school_id"]."\">";
+                        echo $row["city"].$row["name"]."</a>";
+                        echo "</a>";
+                        echo "</p>";
+                    } 
+                ?>
             </div>
         </article>
         <div class="slider_container" style="display:none">
@@ -64,8 +73,3 @@
         </div>
     </body>
 </html>
-
-
- 
-
-
