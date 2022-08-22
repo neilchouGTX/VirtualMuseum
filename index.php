@@ -49,7 +49,7 @@
                     $result = $conn->query($sql);
                     while($row = $result->fetch_assoc()){
                         echo "<p>";
-                        echo "<a href=\"webgl/index.html?school_id=".$row["school_id"]."\">";
+                        echo "<a href=\"webgl/index.html?".$row["name"]."=".$row["school_id"]."\">";
                         echo $row["city"].$row["name"]."</a>";
                         echo "</a>";
                         echo "</p>";

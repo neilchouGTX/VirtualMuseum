@@ -45,6 +45,8 @@
                     while($row = $result->fetch_assoc()){
                         $sql = "UPDATE `$school_id"."_exhibition_hall` SET image_id=NULL WHERE art_place='".$row["art_place"]."'";
                         $conn->query($sql);
+                        $sql = "DELETE FROM `$school_id"."_exhibition_hall` WHERE art_place='".$row["art_place"]."'";
+                        $conn->query($sql);
                     }
                 }
 
