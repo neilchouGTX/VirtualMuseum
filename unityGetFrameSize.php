@@ -14,6 +14,14 @@
             $stmt -> bind_result($fetch_image_path);
             $stmt -> fetch();
             $stmt -> close();
+            $ext = pathinfo($fetch_image_path, PATHINFO_EXTENSION);
+            if($ext=="jpg")
+                $exif = exif_read_data($fetch_image_path);
+            if(!empty($exif['Orientation'])) {
+                $image = imagecreatefromjpeg($fetch_image_path);
+                $image = imagerotate($image, 270, 0);
+                imagejpeg($image, $fetch_image_path);
+            }
             list($width, $height, $type, $attr) = getimagesize($fetch_image_path);
             echo $width/$height;
         }
