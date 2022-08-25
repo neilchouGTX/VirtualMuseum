@@ -18,8 +18,19 @@
             if($ext=="jpg")
                 $exif = exif_read_data($fetch_image_path);
             if(!empty($exif['Orientation'])) {
+                // echo $exif['Orientation'];
+                // echo "</br>";
+                list($width, $height, $type, $attr) = getimagesize($fetch_image_path);
                 $image = imagecreatefromjpeg($fetch_image_path);
-                $image = imagerotate($image, 270, 0);
+                if(($exif['Orientation'] == 8)||($exif['Orientation'] == 7)){
+                    $image = imagerotate($image, 90, 0);
+                }
+                if(($exif['Orientation'] == 6)||($exif['Orientation'] == 5)){
+                    $image = imagerotate($image, 270, 0);
+                }
+                if(($exif['Orientation'] == 3)||($exif['Orientation'] == 4)){
+                    $image = imagerotate($image, 180, 0);
+                }
                 imagejpeg($image, $fetch_image_path);
             }
             list($width, $height, $type, $attr) = getimagesize($fetch_image_path);
