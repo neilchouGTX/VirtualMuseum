@@ -16,7 +16,7 @@
             $stmt -> close();
             $ext = pathinfo($fetch_image_path, PATHINFO_EXTENSION);
             if($ext=="jpg")
-                $exif = exif_read_data($fetch_image_path);
+                @$exif = exif_read_data($fetch_image_path);
             if(!empty($exif['Orientation'])) {
                 // echo $exif['Orientation'];
                 // echo "</br>";
