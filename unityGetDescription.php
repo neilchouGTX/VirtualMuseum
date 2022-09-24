@@ -14,8 +14,8 @@
         $stmt -> bind_result($fetch_art_name,$fetch_art_author,$fetch_art_description,$fetch_author_class);
         $stmt -> fetch();
         $stmt -> close();
-        echo $fetch_art_name;  
-        // echo $fetch_art_name.",".$fetch_art_author.",".$fetch_art_description.",".$fetch_author_class;  
+        // echo $fetch_art_name;  
+        echo $fetch_art_name.",".$fetch_art_author.",".$fetch_art_description.",".$fetch_author_class;  
 
     } 
 ?>
