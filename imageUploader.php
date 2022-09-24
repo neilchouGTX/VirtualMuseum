@@ -386,10 +386,12 @@
             ?>
         </p>
         <div class='hallPreview'>
+            <p>something</p>
+            <a href='img/M1F.jpg'><img src='img/M1F.jpg'/></a>
             <p>滑勝盾美術館1F</p>
-            <a href='img/G1F.jpg'><img src='img/G1F.jpg'/></a>
+            <a href='img/G1F.png'><img src='img/G1F.png'/></a>
             <p>滑勝盾美術館2F</p>
-            <a href='img/G2F.jpg'><img src='img/G2F.jpg'/></a>
+            <a href='img/G2F.png'><img src='img/G2F.png'/></a>
             <p>咪咪美術館1F</p>
             <a href='img/A1F.png'><img src='img/A1F.png'/></a>
         </div>
