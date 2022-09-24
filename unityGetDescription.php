@@ -15,7 +15,7 @@
         $stmt -> fetch();
         $stmt -> close();
         // echo $fetch_art_name;  
-        echo $fetch_art_name.",".$fetch_art_author.",".$fetch_art_description.",".$fetch_author_class;  
+        echo $fetch_art_name."_".$fetch_art_author."_".$fetch_art_description."_".$fetch_author_class;  
 
     } 
 ?>
