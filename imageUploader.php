@@ -386,7 +386,7 @@
             ?>
         </p>
         <div class='hallPreview'>
-            <p>something</p>
+            <p>塔瓦多美術館</p>
             <a href='img/M1F.jpg'><img src='img/M1F.jpg'/></a>
             <p>滑勝盾美術館1F</p>
             <a href='img/G1F.png'><img src='img/G1F.png'/></a>
