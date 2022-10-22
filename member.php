@@ -30,7 +30,7 @@
                     <li><a href="index.php">首頁</a></li>
                     <li><a href="member.php">會員</a></li>
                     <li><a href="index.php?logout=1">登出</a></li>
-                    <li><a href="#">介紹</a></li>
+                    <li><a href="introduction.php">介紹</a></li>
                     <li><a href="#">關於我們</a></li>
                 </ul>
             </nav>   
