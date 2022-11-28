@@ -37,10 +37,21 @@
             </nav>   
         </header>
         <main>
-            <div class="mainvisual">    <!-- 視覺主圖設定-->
-                <img src="img/mainVisual.png">
+            <div class="mainvisual" style="height : 500px ; width:auto; overflow : hidden">    <!-- 視覺主圖設定-->
+                <img id="autoChangeMainVisual" src="img/mainVisual2.png">
             </div>
         </main>
+        <script>
+            var imageSources = ["img/mainVisual2.png", "img/mimi1.png", "img/huaShengDun.png", "img/tawado.png"]
+            var index = 0;
+            setInterval (function(){
+            if (index === imageSources.length) {
+                index = 0;
+            }
+            document.getElementById("autoChangeMainVisual").src = imageSources[index];
+            index++;
+            } , 2000);
+        </script>
         <article id="profile">  <!-- 第一個articl區塊，命名為profile-->
             <div class="content">  <!-- 設定固定寬度-->
                 <h2>參觀列表</h2>
