@@ -10,7 +10,7 @@
 <html lang="zh-Hant-TW">
     <head>
         <meta charset="utf-8">
-        <title>虛擬美術館-介紹</title>
+        <title>虛擬美術館-關於我們</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/style.css" rel="stylesheet" type="text/css"> 
     </head>
@@ -38,15 +38,12 @@
         </header>
         <main>
             <div class="mainvisual">    <!-- 視覺主圖設定-->
-                <video width="800" autoplay muted>
-                    <source src="img/logoAnimation.mov" type="video/mp4">
-                </video>
             </div>
         </main>
         <article id="profile">  <!-- 第一個articl區塊，命名為profile-->
             <div class="content">  <!-- 設定固定寬度-->
-                <h2>雲端美術館</h2>
-                <h3>我們致力於打造一個虛擬平台，可以讓想展示自己畫作的人有一個虛擬美術館可以擺放，並且讓全世界的人所看見</h3>
+                <h2>關於我們</h2>
+                <h3>我們是輔仁大學資訊工程學系的學生，這是我們的畢業專題</h3>
             </div>
         </article>
     </body>

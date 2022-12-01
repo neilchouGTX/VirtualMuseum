@@ -4,9 +4,10 @@
     if((!isset($_SESSION["username"])) || ($_SESSION["username"]=="") || ($_SESSION["permission"]==2)){
         header("Location: index.php");
     }
-    $sql = "SELECT `school_id` FROM `user_account` WHERE username='".$_SESSION["username"]."'";
+    $sql = "SELECT `school_id`,`name` FROM `user_account` WHERE username='".$_SESSION["username"]."'";
     $result = $conn->query($sql)->fetch_assoc();
     $school_id = $result["school_id"];
+    $mySqlName =  $result["name"];
 
     if(isset($_POST["name"]) && isset($_POST["username"]) && isset($_POST["pwd"])){
         $sql = "SELECT COUNT(`username`) FROM `user_account` WHERE school_id ='".$school_id."'";
@@ -41,7 +42,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="css/mainTheme.css" rel="stylesheet" type="text/css"> 
     </head>
-    <body>
+    <body align = center>
         <header>
         <a href="index.php"><div class="logodiv"><img id="logoPic" src="img/newLogo.png"/></div></a>
             <nav>
@@ -50,10 +51,11 @@
                     <li><a href='member.php'>會員</a></li>
                     <li><a href='index.php?logout=1'>登出</a></li>
                     <li><a href="introduction.php">介紹</a></li>
-                    <li><a href="#">關於我們</a></li>
+                    <li><a href="aboutUs.php">關於我們</a></li>
                 </ul>
             </nav>   
         </header>
+        <h1>歡迎<?php echo $mySqlName?>登入</h1>
         <form method="post" align="center">
             <p>
                 學校ID:

@@ -31,7 +31,7 @@
                     <li><a href="member.php">會員</a></li>
                     <li><a href="index.php?logout=1">登出</a></li>
                     <li><a href="introduction.php">介紹</a></li>
-                    <li><a href="#">關於我們</a></li>
+                    <li><a href="aboutUs.php">關於我們</a></li>
                 </ul>
             </nav>   
         </header>
@@ -47,11 +47,13 @@
                 echo "<input type='button' value='編輯班級' onclick='location.href=\"branch.php\"' style='width:120px;height:40px;font-size:20px;'>";
                 echo "<input type='button' value='編輯美術館' onclick='location.href=\"addExhibition.php\"' style='width:120px;height:40px;font-size:20px;'>";
                 echo "<input type='button' value='新增管理員' onclick='location.href=\"registerAccount.php\"' style='width:120px;height:40px;font-size:20px;'>";
+                echo "<input type='button' value='更改密碼' onclick='location.href=\"changePassword.php\"' style='width:120px;height:40px;font-size:20px;'>";
             }
             else{
                 echo "<input type='button' value='上傳圖片' onclick='location.href=\"imageUploader.php\"' style='width:120px;height:40px;font-size:20px;'>";
                 echo "<input type='button' value='編輯班級' onclick='location.href=\"branch.php\"' style='width:120px;height:40px;font-size:20px;'>";
                 echo "<input type='button' value='編輯美術館' onclick='location.href=\"addExhibition.php\"' style='width:120px;height:40px;font-size:20px;'>";
+                echo "<input type='button' value='更改密碼' onclick='location.href=\"changePassword.php\"' style='width:120px;height:40px;font-size:20px;'>";
             }
         ?>
     </body>

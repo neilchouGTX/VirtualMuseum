@@ -32,7 +32,7 @@
                     ?>
 
                     <li><a href="introduction.php">介紹</a></li>
-                    <li><a href="#">關於我們</a></li>
+                    <li><a href="aboutUs.php">關於我們</a></li>
                 </ul>
             </nav>   
         </header>
