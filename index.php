@@ -1,9 +1,14 @@
 <?php
     require_once("connMysql.php");
     session_start();
+    $oneSchool = false;
     if(isset($_GET["logout"]) && $_GET["logout"]==1){
         session_unset();
         header("Location: index.php");
+    }
+    if(isset($_GET["schoolID"])){
+        $oneSchool = true;
+        $school_id = $_GET["schoolID"];
     }
 ?>
 <!DOCTYPE html>
@@ -54,17 +59,33 @@
         </script>
         <article id="profile">  <!-- 第一個articl區塊，命名為profile-->
             <div class="content">  <!-- 設定固定寬度-->
-                <h2>參觀列表</h2>
+                
                 <?php
-                    $sql = "SELECT `school_id`,`city`,`name` FROM city_table";
-                    $result = $conn->query($sql);
-                    while($row = $result->fetch_assoc()){
-                        echo "<p>";
-                        echo "<a href=\"webgl/index.html?school_id=".$row["school_id"]."\">";
-                        echo $row["city"].$row["name"]."</a>";
-                        echo "</a>";
-                        echo "</p>";
-                    } 
+                    if($oneSchool){
+                        echo "<h2>進入美術館</h2>";
+                        $sql = "SELECT `city`,`name` FROM city_table WHERE `school_id`='$school_id'";
+                        $result = $conn->query($sql);
+                        while($row = $result->fetch_assoc()){
+                            echo "<p>";
+                            echo "<a href=\"webgl/index.html?school_id=".$school_id."\">";
+                            echo $row["city"].$row["name"]."</a>";
+                            echo "</a>";
+                            echo "</p>";
+                        }
+                    }
+                    else{
+                        echo "<h2>參觀列表</h2>";
+                        $sql = "SELECT `school_id`,`city`,`name` FROM city_table";
+                        $result = $conn->query($sql);
+                        while($row = $result->fetch_assoc()){
+                            echo "<p>";
+                            echo "<a href=\"webgl/index.html?school_id=".$row["school_id"]."\">";
+                            echo $row["city"].$row["name"]."</a>";
+                            echo "</a>";
+                            echo "</p>";
+                        } 
+                    }
+                    
                 ?>
             </div>
         </article>
